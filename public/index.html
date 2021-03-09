@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" href="./images/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="./images/favicon.ico" type="image/x-icon">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Asap:wght@600&family=Roboto:wght@300&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://kit.fontawesome.com/c7973d10fd.js"></script>
+    <link rel="stylesheet" href="./css/codemirror.css">
+    <link rel="stylesheet" href="./css/dracula.css">
+    <link rel="stylesheet" href="./css/simplescrollbars.css">
+    <link rel="stylesheet" href="./css/style.css">
+    <title>BLAIR - The Magic of Code</title>
+  </head>
+  <body>
+    <header>
+      <div class="container">
+        <div id="logo-box">
+          <img src="./images/logo.png" width="80px">
+          <div id="logo-text">B L A I R</div>
+        </div>
+        <div class="flex-buttons">
+          <button class="btn bt-default"><i class="fas fa-folder-open"></i></button>
+          <button class="btn bt-default"><i class="fas fa-save"></i></i></button>
+          <a href="http://github.com/Krauzy" target="_blank"><button class="btn bt-default"><i class="fab fa-github"></i></button></a>
+        </div>
+      </div>
+    </header>
+    <main>
+      <div class="content">
+        <div class="tab-content tab-editor">
+          <div class="head-edit">
+            <div class="div-file">
+              <div class="file-tab">main.bla</div>
+              <button class="add-file"><i class="add-plus fas fa-plus"></i></button>
+            </div>
+            <div>
+              <button id="bt-dark" class="bt-dark-unselected"><i class="fas fa-moon"></i></button>
+              <button class="bt-run">Run</button>
+            </div>            
+          </div>
+          <div class="content-text">
+            <textarea></textarea>
+          </div>
+        </div>
+        <div class="tab-content terminal">
+          <div class="head-terminal">
+            <div class="out-text">Output</div>
+            <button class="bt-run bt-clear">Clear</button>
+          </div>
+          <div class="content-text">
+            <textarea></textarea>
+          </div>
+        </div>
+      </div>
+    </main>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="./js/codemirror.js"></script>
+    <script src="./js/simplescrollbars.js"></script>
+    <script >
+      const txt = document.querySelectorAll('textarea');
+      var flag = false;
+      var editor = CodeMirror.fromTextArea(txt[0], {
+        lineNumbers: true,
+        styleActiveLine: true,
+        matchBrackets: true,
+        scrollbarStyle: 'simple'
+      });      
+      const terminal = CodeMirror.fromTextArea(txt[1], {
+        readOnly: true
+      });
+      $('#bt-dark').click((e) => {
+        if (!flag) {
+          console.log('dracula');
+          editor.setOption('theme', 'dracula');
+          $('#bt-dark').removeClass('bt-dark-unselected');
+          $('#bt-dark').addClass('bt-dark-selected');
+          flag = true;
+        }
+        else {
+          console.log('default');
+          editor.setOption('theme', 'default');
+          $('#bt-dark').removeClass('bt-dark-selected');
+          $('#bt-dark').addClass('bt-dark-unselected');
+          flag = false;
+        }
+      });
+    </script>         
+  </body>
+</html>
