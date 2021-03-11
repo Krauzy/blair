@@ -1,4 +1,4 @@
-module.export = class Token {
+export default class Token {
     constructor(token, lexem) {
         this.token = token;
         this.lexem = lexem;

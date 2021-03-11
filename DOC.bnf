@@ -4,7 +4,7 @@
 
 <declaration> ::= (<type> ":" <var> <end>) | (<type> ":" <var> <end> <declaration>)
 
-<command> ::= (<allocation> <end> | <if> | <repet>) | (<allocation> <end> | <if> | <repet>) <command>
+<command> ::= (<allocation> <end> | <if> | <loop>) | (<allocation> <end> | <if> | <loop>) <command>
 
 <allocation> ::= (<id> "=" (<id> | <number> | <operation> | <character> | <bool> | <bool_result> | <string>) | <id>"++" | <id>"--")
 
@@ -12,7 +12,7 @@
 
 <operation> ::= (<id> | <number>) <op_symbol> (<id> | <number>)
 
-<repet> ::= <loop> | <while>
+<loop> ::= <loop> | <while>
 
 <if> ::= "if" "(" <condition> ")" ":" "{" <command> "}" [<else>]
 
