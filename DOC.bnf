@@ -1,31 +1,22 @@
-<main> ::= "init:" "{" [<var>] [<command>] "}"
+<main> ::= "init" ":" "{" [<declaration>] [<command>] "}"
 
-<var> ::= <id> | (<id> "," <multi_var>)
+<var> ::= <id> | (<id> "," <var>)
 
 <declaration> ::= (<type> ":" <var> <end>) | (<type> ":" <var> <end> <declaration>)
 
-<command> ::= (<allocation> <end> | <with> | <repet>) | (<allocation> <end> | <with> | <repet>) <command>
+<command> ::= (<allocation> <end> | <if> | <repet>) | (<allocation> <end> | <if> | <repet>) <command>
 
-<allocation> ::= (<id> "=" (<id> | <number> | <operation> | <character> | <bool> | <bool_result> | <string>) |
-				<id>"++" | <id>"--")
+<allocation> ::= (<id> "=" (<id> | <number> | <operation> | <character> | <bool> | <bool_result> | <string>) | <id>"++" | <id>"--")
 
 <type> ::= "integer" | "decimal" | "character" | "string" | "bool"
 
-<end> ::= ";" 
-
-<id> ::= (a..z | _)(a..z | _ | 0..9)*
-
-<operation_symbol> ::= "+" | "-" | "*" | "/"
-
 <operation> ::= (<id> | <number>) <op_symbol> (<id> | <number>)
-
-<number> ::= 0..9+ | 0..9+"."0..9+ | "-"0..9+ | "-"0..9+"."0..9+
 
 <repet> ::= <loop> | <while>
 
-<with> ::= "with" "(" <condition> ")" ":" "{" <command> "}" [<without>]
+<if> ::= "if" "(" <condition> ")" ":" "{" <command> "}" [<else>]
 
-<without> ::= "without" ":" "{" <command> "}"
+<else> ::= "else" ":" "{" <command> "}"
 
 <loop> ::= "loop" "(" (<allocation> <end> | <end>) (<condition> <end> | <end>) [<allocation>] ")" ":" "{" <command> "}"
 
@@ -40,6 +31,14 @@
 <compare> ::= (<number> | <id>) <compare_symbol> (<number> | <id>) 
 
 <logic_symbol> ::= "||" | "&&"
+
+<end> ::= ";" 
+
+<number> ::= 0..9+ | 0..9+"."0..9+ | "-"0..9+ | "-"0..9+"."0..9+
+
+<id> ::= (a..z | _)(a..z | _ | 0..9)*
+
+<operation_symbol> ::= "+" | "-" | "*" | "/" | "%"
 
 <bool> ::= "true" | "false"
 

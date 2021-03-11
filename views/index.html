@@ -40,7 +40,7 @@
             </div>
             <div>
               <button id="bt-dark" class="bt-dark-unselected"><i class="fas fa-moon"></i></button>
-              <button class="bt-run">Run</button>
+              <button class="bt-run">Compilar</button>
             </div>            
           </div>
           <div class="content-text">
@@ -61,18 +61,47 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="./js/codemirror.js"></script>
     <script src="./js/simplescrollbars.js"></script>
+    <script src="./js/clike.js"></script>
     <script >
       const txt = document.querySelectorAll('textarea');
       var flag = false;
       var editor = CodeMirror.fromTextArea(txt[0], {
         lineNumbers: true,
-        styleActiveLine: true,
-        matchBrackets: true,
-        scrollbarStyle: 'simple'
-      });      
-      const terminal = CodeMirror.fromTextArea(txt[1], {
+        scrollbarStyle: 'simple',
+        mode: "text/x-csharp",
+        theme: 'default'
+      });
+      editor.setOption('value', "init: {\n"
+            + "\tinteger: a, b, i;\n"
+            + "\tdecimal: x;\n"
+            + "\tinteger: z;\n"
+            + "\ta = 1;\n"
+            + "\tb = 2;\n"
+            + "\tz = a + b;\n\n"
+            + "\tif(a > b): {\n"
+            + "\t\tz++;\n"
+            + "\t}\n"
+            + "\telse: {\n"
+            + "\t\tz--;\n"
+            + "\t}\n\n"
+            + "\tloop(i = 0; i < z; i++): {\n"
+            + "\t\ta = a + i;\n"
+            + "\t}\n"
+            + "}\n");
+      var terminal = CodeMirror.fromTextArea(txt[1], {
         readOnly: true
       });
+      const getCookie = (name) => {
+        const value = "; " + document.cookie;
+        const parts = value.split("; " + name + "=");
+        if (parts.length === 2) 
+          return parts.pop().split(";").shift()
+            .replaceAll("%20", ' ')
+            .replaceAll("%0A", '\n')
+            .replaceAll("%3A", ':');
+      };
+      console.log(getCookie('output'));
+      terminal.setOption('value', getCookie('output'));
       $('#bt-dark').click((e) => {
         if (!flag) {
           console.log('dracula');
@@ -89,6 +118,6 @@
           flag = false;
         }
       });
-    </script>         
+    </script>
   </body>
 </html>
