@@ -186,10 +186,18 @@ main {
 }
 
 .content-text {
-    background-color: #f5f5f5;
+    background-color: white;
     font-family: 'Roboto', sans-serif;
     overflow-y: auto;
     height: 100%;
+}
+
+.output-content {
+    background-color: white !important;
+}
+
+.ctx-black {
+    background-color: #282a36;
 }
 
 .numbers-list {
