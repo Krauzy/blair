@@ -86,23 +86,10 @@
         extraKeys: {"Ctrl-Space": "autocomplete"}
       });
       editor.setOption('autoCloseBrackets', true);
-      editor.setOption('value', "init: {\n"
-            + "\tinteger: a, b, i;\n"
-            + "\tdecimal: x;\n"
-            + "\tinteger: z;\n"
-            + "\ta = 1;\n"
-            + "\tb = 2;\n"
-            + "\tz = a + b;\n\n"
-            + "\tif(a > b): {\n"
-            + "\t\tz++;\n"
-            + "\t}\n"
-            + "\telse: {\n"
-            + "\t\tz--;\n"
-            + "\t}\n\n"
-            + "\tloop(i = 0; i < z; i++): {\n"
-            + "\t\ta = a + i;\n"
-            + "\t}\n"
-            + "}\n");
+      editor.setOption('value', "init: {\n\tinteger: a, b, i;\n\tdecimal: x;\n"
+            + "\tinteger: z;\n\ta = 1;\n\tb = 2;\n\tz = a + b;\n\n\tif(a > b): {\n"
+            + "\t\tz++;\n\t}\n\telse: {\n\t\tz--;\n\t}\n\n\tloop(i = 0; i < z; i++): {\n"
+            + "\t\ta = a + i;\n\t}\n}\n");
       var terminal = CodeMirror.fromTextArea(txt[1], {
         readOnly: true
       });
