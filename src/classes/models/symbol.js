@@ -1,6 +1,6 @@
 import Token from './token';
 
-export default class symbol {
+export default class Symbol {
     constructor() {
         this.symbols = [];
         this.symbols.push(new Token('{', '{'));
@@ -15,8 +15,8 @@ export default class symbol {
         this.symbols.push(new Token('operation', '/'));
         this.symbols.push(new Token('operation', '%'));
         this.symbols.push(new Token('attribuition', '='));
-        this.symbols.push(new Token('atttibuition', '++'));
-        this.symbols.push(new Token('atttibuition', '--'));
+        this.symbols.push(new Token('attribuition', '++'));
+        this.symbols.push(new Token('attribuition', '--'));
         this.symbols.push(new Token('compare', '>'));
         this.symbols.push(new Token('compare', '>='));
         this.symbols.push(new Token('compare', '<'));
@@ -29,6 +29,7 @@ export default class symbol {
         this.symbols.push(new Token('$', '$'));
         this.symbols.push(new Token(',', ','));
         this.symbols.push(new Token(':', ':'));
+        this.symbols.push(new Token('comment', '#'));
     }
 
     isReserved(word) {

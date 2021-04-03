@@ -6,6 +6,14 @@ export default class Token {
         this.type = "";
     }
 
+    setType(type) {
+        this.type = type;
+    }
+
+    setValue(value) {
+        this.value = value;
+    }
+
     getJson() {
         return {
             token: this.token,

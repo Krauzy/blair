@@ -13,7 +13,7 @@
     <link rel="stylesheet" href="/css/codemirror.css">
     <link rel="stylesheet" href="/css/dracula.css">
     <link rel="stylesheet" href="/css/simplescrollbars.css">
-    <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="/css/style.css">
     <title>BLAIR - The Magic of Code</title>
   </head>
   <body>
@@ -26,7 +26,9 @@
         <div class="flex-buttons">
           <button class="btn bt-default"><i class="fas fa-folder-open"></i></button>
           <button class="btn bt-default" style="padding-left: 0.5em;padding-right: 0.5em;"><i class="fas fa-save"></i></button>
-          <a href="http://github.com/Krauzy" target="_blank"><button class="btn bt-default" style="padding-left: 0.4em;padding-right: 0.4em;"><i class="fab fa-github"></i></button></a>
+          <a href="http://github.com/Krauzy" target="_blank">
+            <button class="btn bt-default" style="padding-left: 0.4em;padding-right: 0.4em;"><i class="fab fa-github"></i></button>
+          </a>
         </div>
       </div>
     </header>
@@ -69,7 +71,7 @@
     <script src="/js/clike.js"></script>
     <script src="/js/closebrackets.js"></script>
     <script src="/js/show-hint.js"></script>
-    <script >
+    <script>
       const txt = document.querySelectorAll('textarea');
       var flag = false;
       const editor = CodeMirror.fromTextArea(txt[0], {
@@ -102,10 +104,7 @@
         const value = "; " + document.cookie;
         const parts = value.split("; " + name + "=");
         if (parts.length === 2) 
-          return parts.pop().split(";").shift()
-            .replaceAll("%20", ' ')
-            .replaceAll("%0A", '\n')
-            .replaceAll("%3A", ':');
+          return decodeURI(parts.pop().split(";").shift());
       };
       console.log(getCookie('output'));
       terminal.setOption('value', getCookie('output'));

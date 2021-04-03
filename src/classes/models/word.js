@@ -1,6 +1,6 @@
 import Token from './token';
 
-export default class word {
+export default class Word {
     constructor() {
         this.words = [];
         this.words.push(new Token('main', 'init'));
