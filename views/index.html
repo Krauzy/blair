@@ -97,6 +97,8 @@
             + "\tinteger: z;\n\ta = 1;\n\tb = 2;\n\tz = a + b;\n\n\tif(a > b): {\n"
             + "\t\tz++;\n\t}\n\telse: {\n\t\tz--;\n\t}\n\n\tloop(i = 0; i < z; i++): {\n"
             + "\t\ta = a + i;\n\t}\n}\n");
+      editor.markText({line: 5, ch: 1}, {line: 6, ch: 0}, {css: "border-bottom: 1px solid red"});
+      //editor.markText({line: 0, ch: 0}, {line: 9, ch: 0}, {css: "background-color: white"});
       var terminal = CodeMirror.fromTextArea(txt[1], {
         readOnly: true
       });
@@ -104,7 +106,7 @@
         const value = "; " + document.cookie;
         const parts = value.split("; " + name + "=");
         if (parts.length === 2) 
-          return decodeURI(parts.pop().split(";").shift());
+          return decodeURI(parts.pop().split(";").shift()).replace('%3A', ':');
       };
       console.log(getCookie('output'));
       terminal.setOption('value', getCookie('output'));
