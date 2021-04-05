@@ -6,7 +6,6 @@ export default class Word {
         this.words.push(new Token('main', 'init'));
         this.words.push(new Token('type', 'integer'));
         this.words.push(new Token('type', 'decimal'));
-        this.words.push(new Token('type', 'character'));
         this.words.push(new Token('type', 'string'));
         this.words.push(new Token('type', 'bool'));
         this.words.push(new Token('bool', 'true'));

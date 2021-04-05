@@ -1,55 +1,80 @@
 <main> ::= "init" ":" "{" [<declaration>] [<command>] "}"
-
 <var> ::= <id> | (<id> "," <var>)
-
 <declaration> ::= (<type> ":" <var> <end>) | (<type> ":" <var> <end> <declaration>)
-
-<command> ::= (<allocation> <end> | <if> | <loop>) | (<allocation> <end> | <if> | <loop>) <command>
-
-<allocation> ::= (<id> "=" (<id> | <number> | <operation> | <character> | <bool> | <bool_result> | <string>) | <id>"++" | <id>"--")
-
-<type> ::= "integer" | "decimal" | "character" | "string" | "bool"
-
-<operation> ::= (<id> | <number>) <op_symbol> (<id> | <number>)
-
-<loop> ::= <loop> | <while>
-
+<command> ::= (<allocation> <end> | <if> | <repetition>) | (<allocation> <end> | <if> | <repetition>) <command>
+<allocation> ::= (<id> "=" (<id> | <number> | <operation> | <bool> | <bool_result> | <string>) | <id>"++" | <id>"--")
+<type> ::= "integer" | "decimal" | "string" | "bool"
+<operation> ::= (<id> | <number>) <operation_symbol> (<id> | <number>)
+<repetition> ::= <loop> | <while>
 <if> ::= "if" "(" <condition> ")" ":" "{" <command> "}" [<else>]
-
 <else> ::= "else" ":" "{" <command> "}"
-
 <loop> ::= "loop" "(" (<allocation> <end> | <end>) (<condition> <end> | <end>) [<allocation>] ")" ":" "{" <command> "}"
-
 <while> ::= "while" "(" <condition> ")" ":" "{" <command> "}"
-
-<condition> ::= (<bool_result>) | (<logic_symbol> <condition>)
-
+<condition> ::= (<bool_result>) | (<bool_result> <logic_symbol> <condition>)
 <bool_result> ::= ["!"] (<id> | <bool> | <compare>) 
-
 <compare_symbol> ::= ">" | "<" | ">=" | "<=" | "==" | "!="
-
 <compare> ::= (<number> | <id>) <compare_symbol> (<number> | <id>) 
-
 <logic_symbol> ::= "||" | "&&"
-
 <end> ::= ";" 
-
 <number> ::= 0..9+ | 0..9+"."0..9+ | "-"0..9+ | "-"0..9+"."0..9+
-
 <id> ::= (a..z | _)(a..z | _ | 0..9)*
-
 <operation_symbol> ::= "+" | "-" | "*" | "/" | "%"
-
 <bool> ::= "true" | "false"
-
 <string> ::= "\"" ... "\""
+<keyword> ::= bool | case | double | else | loop | if | integer | while | init | string | decimal
 
-<digit_value> ::= 0..9
-
-<character_value> ::= a..z | A..Z
-
-<character> ::= "'" (<character_value> | <digit_value>) "'" 
-
-<Keyword> ::= bool | case | character | double | without | loop | with | integer | while | init | string
 
 /************    FIRST    ************/
+
+
+<main> ::= {"init"}
+<var> ::= {variable}
+<declaration> ::= {"int", "decimal", "string", "bool"}
+<command> ::= {variable, "if", "while", "loop"}
+<type> ::= {"int", "decimal", "string", "bool"}
+<allocation> ::= {variable}
+<operation> ::= {variable, number}
+<repetition> ::= {"loop", "while"}
+<if> ::= {"if"}
+<else> ::= {"else"}
+<loop> ::= {"loop"}
+<while> ::= {"while"}
+<condition> ::= {")", ";"}
+<bool_result> ::= {")", ";"}
+<compare_symbol> ::= {number, variable}
+<compare> ::= {"variable, number"}
+<logic_symbol> ::= {"&&", "||"}
+<end> ::= {";"}
+<number> ::= {number}
+<id> ::= {variable}
+<operation_symbol> ::= {"+", "-", "*", "/", "%"}
+<bool> ::= {"true", "false"}
+<string> ::= {"\""}
+
+
+/************    FOLLOW     ************/
+
+
+<main> ::= {"}"}
+<var> ::= {";"}
+<declaration> ::= {variable, "if", "while", "loop"}
+<command> ::= {"}", ";"}
+<type> ::= {variable}
+<allocation> ::= {";", ")", "!", variable, number, "true", "false"},
+<operation> ::= {";"}
+<repetition> ::= {"}"}
+<if> ::= {"}"}
+<else> ::= {"}"}
+<loop> ::= {"}"}
+<while> ::= {"}"}
+<condition> ::= {";", ")"}
+<bool_result> ::= {";", ")"}
+<compare_symbol> ::= {variable, number}
+<compare> ::= {";", ")"}
+<logic_symbol> ::= {variable, number}
+<end> ::= {variable, "if", "while", "loop", }...
+<number> ::= {"+", "-", "*", "/", "&&", "||", ")", ">", "<", ">=", "<=", "==", "!=", ";"}
+<id> ::= {"=", "++", "--", "+", "-", "*", "/", "&&", "||", ")", ">", "<", ">=", "<=", "==", "!="}
+<operation_symbol> ::= {variable, number}
+<bool> ::= {";", ")", "&&", "||"}
+<string> ::= {";"}

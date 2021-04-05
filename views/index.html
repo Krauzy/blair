@@ -55,7 +55,7 @@
         <div class="tab-content terminal">
           <div class="head-terminal">
             <div class="out-text">Output</div>
-            <button class="bt-run bt-clear">Clear</button>
+            <button id="clear" class="bt-run bt-clear">Clear</button>
           </div>
           <div class="content-text output-content">
             <textarea></textarea>
@@ -93,21 +93,27 @@
         extraKeys: {"Ctrl-Space": "autocomplete"}
       });
       editor.setOption('autoCloseBrackets', true);
-      editor.setOption('value', "init: {\n\tinteger: a, b, i;\n\tdecimal: x;\n"
+      /*editor.setOption('value', "init: {\n\tinteger: a, b, i;\n\tdecimal: x;\n"
             + "\tinteger: z;\n\ta = 1;\n\tb = 2;\n\tz = a + b;\n\n\tif(a > b): {\n"
             + "\t\tz++;\n\t}\n\telse: {\n\t\tz--;\n\t}\n\n\tloop(i = 0; i < z; i++): {\n"
-            + "\t\ta = a + i;\n\t}\n}\n");
-      editor.markText({line: 5, ch: 1}, {line: 6, ch: 0}, {css: "border-bottom: 1px solid red"});
+            + "\t\ta = a + i;\n\t}\n}\n");*/
+      //editor.markText({line: 5, ch: 1}, {line: 6, ch: 0}, {css: "border-bottom: 1px solid red"});
       //editor.markText({line: 0, ch: 0}, {line: 9, ch: 0}, {css: "background-color: white"});
-      var terminal = CodeMirror.fromTextArea(txt[1], {
+      const terminal = CodeMirror.fromTextArea(txt[1], {
         readOnly: true
       });
       const getCookie = (name) => {
         const value = "; " + document.cookie;
         const parts = value.split("; " + name + "=");
         if (parts.length === 2) 
-          return decodeURI(parts.pop().split(";").shift()).replace('%3A', ':');
+          return decodeURI(parts.pop().split(";").shift())
+          .split('%3A').join(':')
+          .split('%3D').join('=')
+          .split('%3B').join(';')
+          .split('%3F').join('?')
+          .split('%2B').join('+');
       };
+      editor.setOption('value', getCookie('input'));
       console.log(getCookie('output'));
       terminal.setOption('value', getCookie('output'));
       $('#bt-dark').click((e) => {
@@ -129,7 +135,10 @@
         }
       });
       $('#run').click((e) => {
-        $('#hidden').val(editor.getOption('value'));
+        $('#hidden').val(editor.getValue());
+      });
+      $('#clear').click((e) => {
+        terminal.setOption('value', '');
       });
     </script>
   </body>
