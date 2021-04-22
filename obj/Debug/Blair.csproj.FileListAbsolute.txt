@@ -8,3 +8,13 @@ C:\Users\Trbry\Documents\Compilador\Blair\obj\Debug\Blair.csproj.GenerateResourc
 C:\Users\Trbry\Documents\Compilador\Blair\obj\Debug\Blair.csproj.CoreCompileInputs.cache
 C:\Users\Trbry\Documents\Compilador\Blair\obj\Debug\Blair.exe
 C:\Users\Trbry\Documents\Compilador\Blair\obj\Debug\Blair.pdb
+C:\Users\Trbry\Documents\GitHub\blair\bin\Debug\Blair.exe.config
+C:\Users\Trbry\Documents\GitHub\blair\bin\Debug\Blair.exe
+C:\Users\Trbry\Documents\GitHub\blair\bin\Debug\Blair.pdb
+C:\Users\Trbry\Documents\GitHub\blair\obj\Debug\Blair.csprojAssemblyReference.cache
+C:\Users\Trbry\Documents\GitHub\blair\obj\Debug\Blair.Main.resources
+C:\Users\Trbry\Documents\GitHub\blair\obj\Debug\Blair.Properties.Resources.resources
+C:\Users\Trbry\Documents\GitHub\blair\obj\Debug\Blair.csproj.GenerateResource.cache
+C:\Users\Trbry\Documents\GitHub\blair\obj\Debug\Blair.csproj.CoreCompileInputs.cache
+C:\Users\Trbry\Documents\GitHub\blair\obj\Debug\Blair.exe
+C:\Users\Trbry\Documents\GitHub\blair\obj\Debug\Blair.pdb

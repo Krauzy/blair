@@ -25,6 +25,7 @@ namespace Blair.Compiler
             {
                 Console.WriteLine(t.ToString());
             }
+            output = (output == string.Empty) ? "> Compilado com sucesso!" : output;
             return output;
         }
     }

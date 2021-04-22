@@ -25,7 +25,7 @@ namespace Blair.Compiler.Triggers
 
         public override string ToString()
         {
-            return $"ERROR: {this.message} ({this.line}, {this.column})";
+            return $"{this.message} ({this.line}, {this.column})";
         }
     }
 }

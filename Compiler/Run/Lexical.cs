@@ -88,24 +88,27 @@ namespace Blair.Compiler.Run
             {
                 for (this.column = 0; this.column < line.Length; this.column++, this.letters++)
                 {
-                    if (line[this.column] == '#')   // Comment
+                    if (line[this.column] == '#')       // Comment
                     {
                         this.Tokens.Add(new Token("comment", line.Substring(this.column)));
                         continue;
                     }
-                    else if (char.IsWhiteSpace(line[this.column]))  // White Space
+                    else if (char.IsWhiteSpace(line[this.column]))      // White Space
                     {
                         continue;
                     }
                     else if (line[this.column] == '\'')     // String
                     {
                         string temp = string.Empty;
-                        while (line[++this.column] != '\'' && this.column < line.Length)
+                        this.column++;
+                        this.letters++;
+                        while (this.column < line.Length && line[this.column] != '\'')
                         {
                             temp += line[this.column];
+                            this.column++;
                             this.letters++;
                         }                            
-                        if (line[this.column] == '\'')      // String done ?
+                        if (this.column < line.Length && line[this.column] == '\'')      // String done ?
                         {
                             this.Tokens.Add(new Token("string", $"'{temp}'"));      // String Token
                             continue;
@@ -116,25 +119,25 @@ namespace Blair.Compiler.Run
                             continue;
                         }
                     }
-                    else if (!this.IsNumber(line[this.column].ToString()))  // É Caracter
+                    else if (!this.IsNumber(line[this.column].ToString()))      // É Caracter
                     {
-                        if (line[this.column] != '-' && AddToken(line[this.column].ToString())) // É símbolo
+                        if (line[this.column] != '-' && AddToken(line[this.column].ToString()))     // É símbolo
                             continue;
                         else
                         {
-                            if (line[this.column] == '-')   // É menos ou negativo ?
+                            if (line[this.column] == '-')       // É menos ou negativo ?
                             {
-                                if (line[this.column + 1] == ' ') // É menos
+                                if (line[this.column + 1] == ' ')       // É menos
                                 {
                                     AddToken(line[this.column].ToString());
                                     continue;
                                 }
-                                else // É negativo
+                                else        // É negativo
                                 {
                                     string temp = string.Empty;
                                     temp += line[this.column++];
                                     this.letters++;
-                                    while (this.column < line.Length && char.IsWhiteSpace(line[this.column]))
+                                    while (this.column < line.Length && !char.IsWhiteSpace(line[this.column]))
                                     {
                                         temp += line[this.column++];
                                         this.letters++;
@@ -142,11 +145,11 @@ namespace Blair.Compiler.Run
                                     if (!IsNumber(temp))
                                         this.Errors.Add(new Error($"{temp} não reconhecido!", row, column));
                                     else
-                                        this.Tokens.Add(new Token("number", "-" + temp));
+                                        this.Tokens.Add(new Token("number", temp));
                                     continue;
                                 }
                             }
-                            else // É algum caracter
+                            else        // É algum caracter
                             {
                                 string temp = string.Empty;
                                 while (!char.IsWhiteSpace(line[this.column]) && !this.IsReserved(line[this.column].ToString()) && this.column < line.Length)
@@ -155,8 +158,8 @@ namespace Blair.Compiler.Run
                                     this.column++;
                                     this.letters++;
                                 }
-                                if (!AddToken(temp)) // É palavra reservada
-                                    this.Tokens.Add(new Token("var", temp));    // É variável
+                                if (!AddToken(temp))        // É palavra reservada
+                                    this.Tokens.Add(new Token("var", temp));        // É variável
                                 AddToken(line[this.column].ToString());
                                 continue;
                             }
@@ -165,7 +168,7 @@ namespace Blair.Compiler.Run
                     else
                     {
                         string temp = string.Empty;
-                        while (!char.IsWhiteSpace(line[this.column]) && !IsReserved(line[this.column].ToString()))
+                        while (this.column < line.Length && !char.IsWhiteSpace(line[this.column]) && !IsReserved(line[this.column].ToString()))
                         {
                             temp += line[this.column++];                            
                             this.letters++;
