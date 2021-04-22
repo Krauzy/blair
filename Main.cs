@@ -16,8 +16,6 @@ namespace Blair
     public partial class Main : Form
     {
         private int lines = 0;
-        private bool flag_tilde = false;
-        private bool flag2 = false;
         //
         private bool move = false;
         private Point mouse;
@@ -26,7 +24,12 @@ namespace Blair
         {
             InitializeComponent();
             this.ActiveControl = Code_Box;
-            Code_Box.Text = "init:{\n\tinteger: a;\n\tloop (a = 0; a < 10; a++) {\n\t\ta - 0.5;\n\t}\n}";
+            Code_Box.Text = "init:{\n" +
+                "\tinteger: a;\n" +
+                "\tloop (a = 0; a < 10; a++) {\n" +
+                "\t\ta - 0.5;\n" +
+                "\t}\n" +
+                "}";
             Code_Box_TextChanged(Code_Box, null);
         }
 

@@ -213,6 +213,7 @@
             // Run_Button
             // 
             this.Run_Button.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(9)))), ((int)(((byte)(108)))));
+            this.Run_Button.Cursor = System.Windows.Forms.Cursors.Hand;
             this.Run_Button.FlatAppearance.BorderSize = 0;
             this.Run_Button.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.Run_Button.Font = new System.Drawing.Font("Century Gothic", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -295,6 +296,7 @@
             // Clear_Button
             // 
             this.Clear_Button.BackColor = System.Drawing.Color.White;
+            this.Clear_Button.Cursor = System.Windows.Forms.Cursors.Hand;
             this.Clear_Button.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(9)))), ((int)(((byte)(108)))));
             this.Clear_Button.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.Clear_Button.Font = new System.Drawing.Font("Century Gothic", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
