@@ -26,8 +26,8 @@ namespace Blair
             this.ActiveControl = Code_Box;
             Code_Box.Text = "init:{\n" +
                 "\tinteger: a;\n" +
-                "\tloop (a = 0; a < 10; a++) {\n" +
-                "\t\ta - 0.5;\n" +
+                "\tloop (a = 0; a < 10; a++): {\n" +
+                "\t\ta = a - 0.5;\n" +
                 "\t}\n" +
                 "}";
             Code_Box_TextChanged(Code_Box, null);
@@ -95,13 +95,14 @@ namespace Blair
 
             string[] words = { "while", "init", "if", "loop", "else", "true", "false" };
             string[] types = { "integer", "decimal", "string", "bool"};
-            string[] numbers = { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9" };
-            string[] symbols = { "-", "+", "/", "*", "=", "%" };
+            string[] numbers = { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "." };
+            string[] symbol = { ":" };
 
             Run_String_Code_Box();
             this.Check_Keyword(words, Color.FromArgb(60, 9, 108));
             this.Check_Keyword(types, Color.DarkGoldenrod);
             this.Check_Keyword(numbers, Color.OliveDrab);
+            this.Check_Keyword(symbol, Color.DarkRed);
             Run_Comment_Code_Box();
         }
 

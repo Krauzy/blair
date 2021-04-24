@@ -8,24 +8,25 @@ namespace Blair.Compiler.Tokens
 {
     public class Token
     {
-        private string code;
-        private string lexem;
-        private string type;
 
-        public string Code { get => this.code; set => this.code = value; }
-        public string Lexem { get => this.lexem; set => this.lexem = value; }
-        public string Type { get => this.type; set => this.type = value; }
+        public string Code { get; set; }
+        public string Lexem { get; set; }
+        public string Type { get; set; }
+        public int Line { get; set; }
+        public int Column { get; set; }
 
-        public Token (string token, string lexem, string type = "")
+        public Token(string token, string lexem, string type = "", int line = 0, int column = 0)
         {
-            this.code = token;
-            this.lexem = lexem;
-            this.type = type;
+            this.Code = token;
+            this.Lexem = lexem;
+            this.Lexem = type;
+            this.Line = line;
+            this.Column = column;
         }
 
         public override string ToString()
         {
-            return "{token: '" + this.code + "', lexem: '" + this.lexem + "'}";
+            return "{token: '" + this.Code + "', lexem: '" + this.Lexem + "'}";
         }
     }
 }

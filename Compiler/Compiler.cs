@@ -11,21 +11,36 @@ namespace Blair.Compiler
 {
     public class Compiler
     {
+        public List<Error> Errors { get; set; }
+        public List<Token> Tokens { get; set; }
+
+        public static int LINE = 0;
+        public static int COLUMN = 0;
+
+        public Compiler()
+        {
+            this.Errors = new List<Error>();
+            this.Tokens = new List<Token>();
+        }
+
         public static string Run(string code)
         {
+            Compiler com = new Compiler();
             long start = DateTime.Now.Ticks;
             Reserved.Load();
             string output = string.Empty;
             Lexical lexical = new Lexical(code);
             lexical.Run();
-            foreach(Error err in lexical.Errors)
-            {
-                output += $"> Erro: {err}";
-            }
-            foreach(Token t in lexical.Tokens)
+            Compiler.LINE = lexical.row;
+            Compiler.COLUMN = lexical.column;
+            com.Tokens = lexical.Tokens;
+            foreach(Token t in com.Tokens)
             {
                 Console.WriteLine(t.ToString());
             }
+            com.Errors.AddRange(lexical.Errors);
+            foreach(Error err in com.Errors)
+                output += $"> Erro: {err}";
             long stop = DateTime.Now.Ticks;
             output = (output == string.Empty) ? "> Compilado com sucesso!" : output;
             int res = Convert.ToInt32(stop - start);

@@ -48,6 +48,9 @@
   <ItemGroup>
     <Compile Include="Compiler\Compiler.cs" />
     <Compile Include="Compiler\Run\Lexical.cs" />
+    <Compile Include="Compiler\Run\Syntatic.cs" />
+    <Compile Include="Compiler\Tokens\First.cs" />
+    <Compile Include="Compiler\Tokens\Follow.cs" />
     <Compile Include="Compiler\Tokens\Reserved.cs" />
     <Compile Include="Compiler\Tokens\Token.cs" />
     <Compile Include="Compiler\Triggers\Error.cs" />

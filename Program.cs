@@ -17,7 +17,6 @@ namespace Blair
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new Main());
-            //Console.WriteLine(double.TryParse("", out _));
         }
     }
 }

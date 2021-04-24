@@ -11,8 +11,8 @@ namespace Blair.Compiler.Run
     public class Lexical
     {
         private string code;
-        private int row;
-        private int column;
+        public int row;
+        public int column;
         private int letters;
 
         public List<Token> Tokens { get; set; }
@@ -90,7 +90,7 @@ namespace Blair.Compiler.Run
                 {
                     if (line[this.column] == '#')       // Comment
                     {
-                        this.Tokens.Add(new Token("comment", line.Substring(this.column)));
+                        this.Tokens.Add(new Token("comment", line.Substring(this.column), line: this.row, column: this.column));
                         continue;
                     }
                     else if (char.IsWhiteSpace(line[this.column]))      // White Space
@@ -110,7 +110,7 @@ namespace Blair.Compiler.Run
                         }                            
                         if (this.column < line.Length && line[this.column] == '\'')      // String done ?
                         {
-                            this.Tokens.Add(new Token("string", $"'{temp}'"));      // String Token
+                            this.Tokens.Add(new Token("string", $"'{temp}'", line: this.row, column: this.column));      // String Token
                             continue;
                         }
                         else    // String not done ?
@@ -145,7 +145,7 @@ namespace Blair.Compiler.Run
                                     if (!IsNumber(temp))
                                         this.Errors.Add(new Error($"{temp} não reconhecido!", row, column));
                                     else
-                                        this.Tokens.Add(new Token("number", temp));
+                                        this.Tokens.Add(new Token("number", temp, line: this.row, column: this.column));
                                     continue;
                                 }
                             }
@@ -159,7 +159,7 @@ namespace Blair.Compiler.Run
                                     this.letters++;
                                 }
                                 if (!AddToken(temp))        // É palavra reservada
-                                    this.Tokens.Add(new Token("var", temp));        // É variável
+                                    this.Tokens.Add(new Token("var", temp, line: this.row, column: this.column));        // É variável
                                 AddToken(line[this.column].ToString());
                                 continue;
                             }
@@ -174,7 +174,7 @@ namespace Blair.Compiler.Run
                             this.letters++;
                         }
                         if (IsNumber(temp))
-                            this.Tokens.Add(new Token("number", temp));
+                            this.Tokens.Add(new Token("number", temp, line: this.row, column: this.column));
                         else
                             this.Errors.Add(new Error($"Valor '{temp}' inconsistente", row, column));
                     }
