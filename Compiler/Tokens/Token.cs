@@ -11,15 +11,13 @@ namespace Blair.Compiler.Tokens
 
         public string Code { get; set; }
         public string Lexem { get; set; }
-        public string Type { get; set; }
         public int Line { get; set; }
         public int Column { get; set; }
 
-        public Token(string token, string lexem, string type = "", int line = 0, int column = 0)
+        public Token(string token, string lexem, int line = 0, int column = 0)
         {
             this.Code = token;
             this.Lexem = lexem;
-            this.Lexem = type;
             this.Line = line;
             this.Column = column;
         }

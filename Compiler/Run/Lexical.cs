@@ -83,105 +83,112 @@ namespace Blair.Compiler.Run
 
         public void Run()
         {
-            string[] rows = code.Split('\n');
-            foreach(string line in rows)
+            try
             {
-                for (this.column = 0; this.column < line.Length; this.column++, this.letters++)
+                string[] rows = code.Split('\n');
+                foreach (string line in rows)
                 {
-                    if (line[this.column] == '#')       // Comment
+                    for (this.column = 0; this.column < line.Length; this.column++, this.letters++)
                     {
-                        this.Tokens.Add(new Token("comment", line.Substring(this.column), line: this.row, column: this.column));
-                        continue;
-                    }
-                    else if (char.IsWhiteSpace(line[this.column]))      // White Space
-                    {
-                        continue;
-                    }
-                    else if (line[this.column] == '\'')     // String
-                    {
-                        string temp = string.Empty;
-                        this.column++;
-                        this.letters++;
-                        while (this.column < line.Length && line[this.column] != '\'')
+                        if (line[this.column] == '#')       // Comment
                         {
-                            temp += line[this.column];
+                            this.Tokens.Add(new Token("comment", line.Substring(this.column), line: this.row, column: this.column));
+                            continue;
+                        }
+                        else if (char.IsWhiteSpace(line[this.column]))      // White Space
+                        {
+                            continue;
+                        }
+                        else if (line[this.column] == '\'')     // String
+                        {
+                            string temp = string.Empty;
                             this.column++;
                             this.letters++;
-                        }                            
-                        if (this.column < line.Length && line[this.column] == '\'')      // String done ?
-                        {
-                            this.Tokens.Add(new Token("string", $"'{temp}'", line: this.row, column: this.column));      // String Token
-                            continue;
-                        }
-                        else    // String not done ?
-                        {
-                            this.Errors.Add(new Error($"'{temp} -> Esperado \"'\"", row, column));      // Trigger String Error
-                            continue;
-                        }
-                    }
-                    else if (!this.IsNumber(line[this.column].ToString()))      // É Caracter
-                    {
-                        if (line[this.column] != '-' && AddToken(line[this.column].ToString()))     // É símbolo
-                            continue;
-                        else
-                        {
-                            if (line[this.column] == '-')       // É menos ou negativo ?
+                            while (this.column < line.Length && line[this.column] != '\'')
                             {
-                                if (line[this.column + 1] == ' ')       // É menos
-                                {
-                                    AddToken(line[this.column].ToString());
-                                    continue;
-                                }
-                                else        // É negativo
-                                {
-                                    string temp = string.Empty;
-                                    temp += line[this.column++];
-                                    this.letters++;
-                                    while (this.column < line.Length && !char.IsWhiteSpace(line[this.column]))
-                                    {
-                                        temp += line[this.column++];
-                                        this.letters++;
-                                    }
-                                    if (!IsNumber(temp))
-                                        this.Errors.Add(new Error($"{temp} não reconhecido!", row, column));
-                                    else
-                                        this.Tokens.Add(new Token("number", temp, line: this.row, column: this.column));
-                                    continue;
-                                }
+                                temp += line[this.column];
+                                this.column++;
+                                this.letters++;
                             }
-                            else        // É algum caracter
+                            if (this.column < line.Length && line[this.column] == '\'')      // String done ?
                             {
-                                string temp = string.Empty;
-                                while (!char.IsWhiteSpace(line[this.column]) && !this.IsReserved(line[this.column].ToString()) && this.column < line.Length)
-                                {
-                                    temp += line[this.column];
-                                    this.column++;
-                                    this.letters++;
-                                }
-                                if (!AddToken(temp))        // É palavra reservada
-                                    this.Tokens.Add(new Token("var", temp, line: this.row, column: this.column));        // É variável
-                                AddToken(line[this.column].ToString());
+                                this.Tokens.Add(new Token("string", $"'{temp}'", line: this.row, column: this.column));      // String Token
+                                continue;
+                            }
+                            else    // String not done ?
+                            {
+                                this.Errors.Add(new Error($"'{temp} -> Esperado \"'\"", row, column));      // Trigger String Error
                                 continue;
                             }
                         }
-                    }
-                    else
-                    {
-                        string temp = string.Empty;
-                        while (this.column < line.Length && !char.IsWhiteSpace(line[this.column]) && !IsReserved(line[this.column].ToString()))
+                        else if (!this.IsNumber(line[this.column].ToString()))      // É Caracter
                         {
-                            temp += line[this.column++];                            
-                            this.letters++;
+                            if (line[this.column] != '-' && AddToken(line[this.column].ToString()))     // É símbolo
+                                continue;
+                            else
+                            {
+                                if (line[this.column] == '-')       // É menos ou negativo ?
+                                {
+                                    if (line[this.column + 1] == ' ')       // É menos
+                                    {
+                                        AddToken(line[this.column].ToString());
+                                        continue;
+                                    }
+                                    else        // É negativo
+                                    {
+                                        string temp = string.Empty;
+                                        temp += line[this.column++];
+                                        this.letters++;
+                                        while (this.column < line.Length && !char.IsWhiteSpace(line[this.column]))
+                                        {
+                                            temp += line[this.column++];
+                                            this.letters++;
+                                        }
+                                        if (!IsNumber(temp))
+                                            this.Errors.Add(new Error($"{temp} não reconhecido!", row, column));
+                                        else
+                                            this.Tokens.Add(new Token("number", temp, line: this.row, column: this.column));
+                                        continue;
+                                    }
+                                }
+                                else        // É algum caracter
+                                {
+                                    string temp = string.Empty;
+                                    while (this.column < line.Length && !char.IsWhiteSpace(line[this.column]) && !this.IsReserved(line[this.column].ToString()))
+                                    {
+                                        temp += line[this.column];
+                                        this.column++;
+                                        this.letters++;
+                                    }
+                                    if (!AddToken(temp))        // É palavra reservada
+                                        this.Tokens.Add(new Token("var", temp, line: this.row, column: this.column));        // É variável
+                                    AddToken(line[this.column].ToString());
+                                    continue;
+                                }
+                            }
                         }
-                        if (IsNumber(temp))
-                            this.Tokens.Add(new Token("number", temp, line: this.row, column: this.column));
                         else
-                            this.Errors.Add(new Error($"Valor '{temp}' inconsistente", row, column));
+                        {
+                            string temp = string.Empty;
+                            while (this.column < line.Length && !char.IsWhiteSpace(line[this.column]) && !IsReserved(line[this.column].ToString()))
+                            {
+                                temp += line[this.column++];
+                                this.letters++;
+                            }
+                            if (IsNumber(temp))
+                                this.Tokens.Add(new Token("number", temp, line: this.row, column: this.column));
+                            else
+                                this.Errors.Add(new Error($"Valor '{temp}' inconsistente", row, column));
+                        }
                     }
+                    this.row++;
                 }
-                this.row++;
+                CheckDoubleSymbols();
             }
-            CheckDoubleSymbols();
+            catch
+            {
+                this.Errors.Add(new Error($"EOF inesperado", row, column));
+            }
         }
     }
 }
