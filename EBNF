@@ -1,27 +1,49 @@
 <main> ::= "init" ":" "{" [<declaration>] [<command>] "}"
+
 <var> ::= <id> | (<id> "," <var>)
+
 <declaration> ::= (<type> ":" <var> <end>) | (<type> ":" <var> <end> <declaration>)
+
 <command> ::= (<allocation> <end> | <if> | <repetition>) | (<allocation> <end> | <if> | <repetition>) <command>
+
 <allocation> ::= (<id> "=" (<id> | <number> | <operation> | <bool> | <bool_result> | <string>) | <id>"++" | <id>"--")
+
 <type> ::= "integer" | "decimal" | "string" | "bool"
+
 <operation> ::= (<id> | <number>) <operation_symbol> (<id> | <number>)
+
 <repetition> ::= <loop> | <while>
+
 <if> ::= "if" "(" <condition> ")" ":" "{" <command> "}" [<else>]
+
 <else> ::= "else" ":" "{" <command> "}"
+
 <loop> ::= "loop" "(" (<allocation> <end> | <end>) (<condition> <end> | <end>) [<allocation>] ")" ":" "{" <command> "}"
+
 <while> ::= "while" "(" <condition> ")" ":" "{" <command> "}"
 
 <condition> ::= (<bool_result>) | (<bool_result> <logic_symbol> <condition>)
+
 <bool_result> ::= ["!"] (<id> | <bool> | <compare>) 
+
 <compare_symbol> ::= ">" | "<" | ">=" | "<=" | "==" | "!="
+
 <compare> ::= (<number> | <id> | <bool> | <string>) <compare_symbol> (<number> | <id> | <bool> | <string>) 
+
 <logic_symbol> ::= "||" | "&&"
+
 <end> ::= ";" 
+
 <number> ::= 0..9+ | 0..9+"."0..9+ | "-"0..9+ | "-"0..9+"."0..9+
+
 <id> ::= (a..z | _)(a..z | _ | 0..9)*
+
 <operation_symbol> ::= "+" | "-" | "*" | "/" | "%"
+
 <bool> ::= "true" | "false"
+
 <string> ::= "\"" ... "\""
+
 <keyword> ::= bool | case | double | else | loop | if | integer | while | init | string | decimal
 
 
