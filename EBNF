@@ -4,15 +4,14 @@
 
 <declaration> ::= (<type> ":" <var> <end>) | (<type> ":" <var> <end> <declaration>)
 
-<command> ::= (<allocation> <end> | <if> | <repetition>) | (<allocation> <end> | <if> | <repetition>) <command>
+<command> ::= (<allocation> <end> | <if> | <loop> | <while>) | (<allocation> <end> | <if> | <loop> | <while>) <command>
 
-<allocation> ::= (<id> "=" (<id> | <number> | <operation> | <bool> | <bool_result> | <string>) | <id>"++" | <id>"--")
+<allocation> ::= <id> "=" (<id> | <number> | <operation> | <bool> | <result> | <string>) | <id>"++" | <id>"--"
 
 <type> ::= "integer" | "decimal" | "string" | "bool"
 
-<operation> ::= (<id> | <number>) <operation_symbol> (<id> | <number>)
+<operation> ::= (<id> | <number>) <operation_symbol> (<id> | <number>) | (<id> | <number>) <operation_symbol> (<id> | <number>) <operation>
 
-<repetition> ::= <loop> | <while>
 
 <if> ::= "if" "(" <condition> ")" ":" "{" <command> "}" [<else>]
 
@@ -22,9 +21,9 @@
 
 <while> ::= "while" "(" <condition> ")" ":" "{" <command> "}"
 
-<condition> ::= (<bool_result>) | (<bool_result> <logic_symbol> <condition>)
+<condition> ::= (<result>) | (<result> <logic_symbol> <condition>)
 
-<bool_result> ::= ["!"] (<id> | <bool> | <compare>) 
+<result> ::= ["!"] (<id> | <bool> | <compare>)
 
 <compare_symbol> ::= ">" | "<" | ">=" | "<=" | "==" | "!="
 
@@ -57,13 +56,12 @@
 <type> ::= {"int", "decimal", "string", "bool"}
 <allocation> ::= {variable}
 <operation> ::= {variable, number}
-<repetition> ::= {"loop", "while"}
 <if> ::= {"if"}
 <else> ::= {"else"}
 <loop> ::= {"loop"}
 <while> ::= {"while"}
 <condition> ::= {"!", variable, number, "true", "false", string}
-<bool_result> ::= {"!", variable, number, "true", "false", string}
+<result> ::= {"!", variable, number, "true", "false", string}
 <compare_symbol> ::= {">", "<", ">=", "<=", "==", "!="}
 <compare> ::= {variable, number, "true", "false", string}
 <logic_symbol> ::= {"&&", "||"}
@@ -85,13 +83,12 @@
 <type> ::= {variable}
 <allocation> ::= {";", ")", "!", variable, number, "true", "false"},
 <operation> ::= {";"}
-<repetition> ::= {"}"}
 <if> ::= {"}"}
 <else> ::= {"}"}
 <loop> ::= {"}"}
 <while> ::= {"}"}
 <condition> ::= {";", ")"}
-<bool_result> ::= {";", ")"}
+<result> ::= {";", ")"}
 <compare_symbol> ::= {variable, number, string, "true", "false"}
 <compare> ::= {";", ")"}
 <logic_symbol> ::= {variable, number}

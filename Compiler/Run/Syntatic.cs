@@ -33,7 +33,7 @@ namespace Blair.Compiler.Run
                 : null;
         }
 
-        #region main
+        #region MAIN
         private void _main()
         {
             try
@@ -69,7 +69,7 @@ namespace Blair.Compiler.Run
         }
         #endregion
 
-        #region declaration
+        #region DECLARATION
         private void _declaration()
         {
             try
@@ -83,7 +83,7 @@ namespace Blair.Compiler.Run
                         bool var = true;
                         bool end = false;
 
-                        while (this.token.Code != "end")
+                        while (!follow.Declaration.Contains(this.token.Code))
                         {
                             end = true;
                             if (this.token.Code == "var" && var)
@@ -136,7 +136,7 @@ namespace Blair.Compiler.Run
         }
         #endregion 
 
-        #region command
+        #region COMMAND
         private void _command()
         {
             try
@@ -160,7 +160,7 @@ namespace Blair.Compiler.Run
 
                         case "var":
                             _allocation();
-                            if (this.token.Code == "end")
+                            if (follow.Allocation.Contains(this.token.Code))
                                 this.token = NextToken();
                             else    
                                 this.errors.Add(new Error("';' esperado", this.token.Line, this.token.Column));
@@ -176,7 +176,7 @@ namespace Blair.Compiler.Run
         }
         #endregion
 
-        #region if
+        #region IF
         private void _if()
         {
             try
@@ -198,7 +198,7 @@ namespace Blair.Compiler.Run
                                     this.token = NextToken();
                                     _command();
                                     this.token = NextToken();
-                                    if (this.token.Code == "close-bracket")
+                                    if (follow.If.Contains(this.token.Code))
                                         _else();
                                     else
                                         this.errors.Add(new Error("'}' esperado", this.token.Line, this.token.Column));
@@ -223,7 +223,7 @@ namespace Blair.Compiler.Run
         }
         #endregion
 
-        #region else
+        #region ELSE
         private void _else()
         {
             try
@@ -238,7 +238,7 @@ namespace Blair.Compiler.Run
                         {
                             this.token = NextToken();
                             _command();
-                            if (this.token.Code == "close-bracket")
+                            if (follow.Else.Contains(this.token.Code))
                                 this.token = NextToken();
                             else
                                 this.errors.Add(new Error("'}' esperado", this.token.Line, this.token.Column));
@@ -257,17 +257,166 @@ namespace Blair.Compiler.Run
         }
         #endregion
 
+        #region COMPARE
+        private bool _compare()
+        {
+            Token aux;
+            try
+            {
+                if (first.Compare.Contains(this.token.Code))
+                {
+                    aux = this.token;
+                    this.token = NextToken();
+                    if (Follow.Compare_Symbols.Contains(this.token.Code))
+                    {
+                        this.token = NextToken();
+                        if (first.Compare.Contains(this.token.Code))
+                            return true;
+                        else
+                            this.errors.Add(new Error($"Token '{this.token.Lexem}' inesperado", this.token.Line, this.token.Column));
+                    }
+                    else    //GAMBIARRA
+                    {
+                        if (aux.Code == "string")
+                            this.errors.Add(new Error($"Tipo <STRING> inesperado", this.token.Line, this.token.Column));
+
+                        if (!follow.Compare.Contains(this.token.Code))
+                            this.errors.Add(new Error($"Token '{this.token.Lexem}' inesperado", this.token.Line, this.token.Column));
+                    }
+                }
+            }
+            catch
+            {
+                this.errors.Add(new Error("EOF inesperado", Compiler.LINE, Compiler.COLUMN));
+            }
+            return false;
+        }
+        #endregion
+
+        #region RESULT
+        private void _result()
+        {
+            bool not = false;
+            try
+            {
+                if (first.Result.Contains(this.token.Code))
+                {
+                    if (this.token.Code == "!")
+                    {
+                        this.token = NextToken();
+                        not = true;
+                    }
+
+                    if (first.Compare.Contains(this.token.Code))
+                    {
+                        if (this.token.Code == "string" && not)
+                            this.errors.Add(new Error($"Tipo <STRING> inesperado", this.token.Line, this.token.Column));
+                        else
+                        {
+                            _compare();
+                            if (this.token.Code == "logic")
+                            {
+                                this.token = NextToken();
+                                _result();
+                            }
+                            else if (!follow.Result.Contains(this.token.Code))
+                                this.errors.Add(new Error($"Token {this.token.Code} inesperado", this.token.Line, this.token.Column));
+                        }
+                    }
+                    else
+                        this.errors.Add(new Error($"Token '{this.token.Lexem}' inesperado", this.token.Line, this.token.Column));
+                }
+                else
+                    this.errors.Add(new Error($"Token '{this.token.Lexem}' inesperado", this.token.Line, this.token.Column));
+            }
+            catch
+            {
+                this.errors.Add(new Error("EOF inesperado", Compiler.LINE, Compiler.COLUMN));
+            }
+        }
+        #endregion
+
+        #region CONDITION
         private void _condition()
         {
-
+            try
+            {
+                if (first.Codition.Contains(this.token.Code))
+                    _result();
+                else
+                    this.errors.Add(new Error($"Token '{this.token.Lexem}' inesperado", this.token.Line, this.token.Column));
+            }
+            catch
+            {
+                this.errors.Add(new Error("EOF inesperado", Compiler.LINE, Compiler.COLUMN));
+            }
         }
+        #endregion
 
+        #region ALLOCATION
         private void _allocation()
         {
-
+            try
+            {
+                if (first.Allocation.Contains(this.token.Code))
+                {
+                    this.token = NextToken();
+                    if (this.token.Code == "attribuition" || this.token.Code == "increment" || this.token.Code == "decrement")
+                    {
+                        if (this.token.Code == "attribuition")
+                        {
+                            this.token = NextToken();
+                            if (this.token.Code == "string" || this.token.Code == "bool" || this.token.Code == "number" || this.token.Code == "var")
+                            {
+                                if (this.token.Code == "var" || this.token.Code == "number")
+                                    _operation();
+                            }
+                            else
+                                this.errors.Add(new Error($"Token '{this.token.Lexem}' inesperado", this.token.Line, this.token.Column));
+                        }
+                    }
+                    else
+                        this.errors.Add(new Error("Atributo de atribuição '=', '++' ou '--' esperado", this.token.Line, this.token.Column));
+                }
+                else
+                    this.errors.Add(new Error("Tipo variável esperado", this.token.Line, this.token.Column));
+            }
+            catch
+            {
+                this.errors.Add(new Error("EOF inesperado", Compiler.LINE, Compiler.COLUMN));
+            }
         }
+        #endregion
 
-        #region while            
+        #region OPERATION
+        private void _operation()
+        {
+            try
+            {
+                if (first.Operation.Contains(this.token.Code))
+                {
+                    this.token = NextToken();
+                    if (this.token.Code == "operation")
+                    {
+                        this.token = NextToken();
+                        _operation();
+                    }
+                    else if (!follow.Operation.Contains(this.token.Code))
+                    {
+                        this.errors.Add(new Error("';' esperado", this.token.Line, this.token.Column));
+                    }
+                }
+                else
+                    this.errors.Add(new Error("Tipo 'number' ou 'var' esperado", this.token.Line, this.token.Column));
+            }
+            catch
+            {
+                this.errors.Add(new Error("EOF inesperado", Compiler.LINE, Compiler.COLUMN));
+            }
+        }
+        #endregion
+
+        #region WHILE            
         private void _while()
         {
             try
@@ -288,7 +437,7 @@ namespace Blair.Compiler.Run
                                 {
                                     this.token = NextToken();
                                     _command();
-                                    if (this.token.Code == "close-bracket")
+                                    if (follow.While.Contains(this.token.Code))
                                         this.token = NextToken();
                                     else
                                         this.errors.Add(new Error("'}' esperado", this.token.Line, this.token.Column));
@@ -313,7 +462,7 @@ namespace Blair.Compiler.Run
         }
         #endregion
 
-        #region loop
+        #region LOOP
         private void _loop()
         {
             try
@@ -324,10 +473,10 @@ namespace Blair.Compiler.Run
                     if (this.token.Code == "open-parenthesis")
                     {
                         this.token = NextToken();
-                        if (this.token.Code != "end")
+                        if (!follow.Declaration.Contains(this.token.Code))
                         {
                             _allocation();
-                            if (this.token.Code != "end")
+                            if (!follow.Declaration.Contains(this.token.Code))
                                 this.errors.Add(new Error("';' esperado", this.token.Line, this.token.Column));
                         }
                         else
@@ -353,7 +502,7 @@ namespace Blair.Compiler.Run
                                         if (this.token.Code == "open-bracket")
                                         {
                                             _command();
-                                            if (this.token.Code == "close-bracket")
+                                            if (follow.Loop.Contains(this.token.Code))
                                                 this.token = NextToken();
                                             else
                                                 this.errors.Add(new Error("'}' esperado", this.token.Line, this.token.Column));

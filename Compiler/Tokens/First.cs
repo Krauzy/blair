@@ -15,13 +15,12 @@ namespace Blair.Compiler.Tokens
         public List<string> Allocation { get; set; }
         public List<string> Type { get; set; }
         public List<string> Operation { get; set; }
-        public List<string> Repetition { get; set; }
         public List<string> If { get; set; }
         public List<string> Else { get; set; }
         public List<string> Loop { get; set; }
         public List<string> While { get; set; }
         public List<string> Codition { get; set; }
-        public List<string> Bool_Result { get; set; }
+        public List<string> Result { get; set; }
         public List<string> Compare_Symbol { get; set; }
         public List<string> Compare { get; set; }
         public List<string> Logic_Symbol { get; set; }
@@ -39,20 +38,19 @@ namespace Blair.Compiler.Tokens
             Type = new List<string> { "int", "decimal", "string", "bool" };
             Allocation = new List<string> { "var" };
             Operation = new List<string> { "var", "number" };
-            Repetition = new List<string> { "loop", "while" };
             If = new List<string> { "if" };
             Else = new List<string> { "else" };
             Loop = new List<string> { "loop" };
             While = new List<string> { "while" };
-            Codition = new List<string> { "!", "var", "number", "bool", "string" };
-            Bool_Result = new List<string> { "!", "var", "bool", "number", "string"};
+            Codition = new List<string> { "not", "var", "number", "bool", "string" };
+            Result = new List<string> { "not", "var", "bool", "number", "string"};
             Compare_Symbol = new List<string> { "compare" };
             Compare = new List<string> { "var", "number", "bool", "string" };
-            Logic_Symbol = new List<string> { "&&", "||" };
-            End = new List<string> { ";" };
-            Operation_Symbol = new List<string> { "logic" };
+            Logic_Symbol = new List<string> { "logic" };
+            End = new List<string> { "end" };
+            Operation_Symbol = new List<string> { "operation" };
             Bool = new List<string> { "bool" };
-            String = new List<string> { "'" };
+            String = new List<string> { "quote" };
         }
     }
 }

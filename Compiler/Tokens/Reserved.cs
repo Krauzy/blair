@@ -33,10 +33,11 @@ namespace Blair.Compiler.Tokens
                 new Token("compare", ">="),
                 new Token("compare", "=="),
                 new Token("compare", "!="),
+                new Token("not", "!"),
                 new Token("logic", "&&"),
                 new Token("logic", "||"),
                 new Token("end", ";"),
-                new Token("string", "'"),
+                new Token("quote", "'"),
                 new Token("comma", ","),
                 new Token("opening", ":"),
                 new Token("comment", "#")

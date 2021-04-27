@@ -8,6 +8,8 @@ namespace Blair.Compiler.Tokens
 {
     public class Follow
     {
+        public static List<string> Compare_Symbols = new List<string> { "<", ">", "<=", ">=", "==", "!=" };
+
         public List<string> Main { get; set; }
         public List<string> Var { get; set; }
         public List<string> Declaration { get; set; }
@@ -15,13 +17,12 @@ namespace Blair.Compiler.Tokens
         public List<string> Allocation { get; set; }
         public List<string> Type { get; set; }
         public List<string> Operation { get; set; }
-        public List<string> Repetition { get; set; }
+        public List<string> Result { get; set; }
         public List<string> If { get; set; }
         public List<string> Else { get; set; }
         public List<string> Loop { get; set; }
         public List<string> While { get; set; }
         public List<string> Codition { get; set; }
-        public List<string> Bool_Result { get; set; }
         public List<string> Compare_Symbol { get; set; }
         public List<string> Compare { get; set; }
         public List<string> Logic_Symbol { get; set; }
@@ -32,27 +33,26 @@ namespace Blair.Compiler.Tokens
 
         public Follow ()
         {
-            Main = new List<string> { "}" };
-            Var = new List<string> { " ", ";" };
-            Declaration = new List<string> { ";" };
-            Command = new List<string> { ";", "}" };
+            Main = new List<string> { "close-bracket" };
+            Var = new List<string> { "end" };
+            Declaration = new List<string> { "end" };
+            Command = new List<string> { "end", "close-bracket" };
             Type = new List<string> { "var" };
-            Allocation = new List<string> { ";" };
-            Operation = new List<string> { ";" };
-            Repetition = new List<string> { "}" };
-            If = new List<string> { "}" };
-            Else = new List<string> { "}" };
-            Loop = new List<string> { "}" };
-            While = new List<string> { "}" };
-            Codition = new List<string> { ")", ";" };
-            Bool_Result = new List<string> { ")", ";" };
+            Allocation = new List<string> { "end" };
+            Operation = new List<string> { "end" };
+            If = new List<string> { "close-bracket" };
+            Else = new List<string> { "close-bracket" };
+            Loop = new List<string> { "close-bracket" };
+            While = new List<string> { "close-bracket" };
+            Codition = new List<string> { "close-parenthesis", "end" };
+            Result = new List<string> { "close-parenthesis", "end" };
             Compare_Symbol = new List<string> { "var", "number", "string", "bool" };
-            Compare = new List<string> { ";", ")" };
-            Logic_Symbol = new List<string> { "&&", "||" };
-            End = new List<string> { ";" };
-            Operation_Symbol = new List<string> { "logic" };
-            Bool = new List<string> { "bool" };
-            String = new List<string> { "'" };
+            Compare = new List<string> { "end", "close-parenthesis", "logic" };
+            Logic_Symbol = new List<string>();
+            End = new List<string> ();
+            Operation_Symbol = new List<string>();
+            Bool = new List<string>();
+            String = new List<string> { "quote" };
         }
     }
 }

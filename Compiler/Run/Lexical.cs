@@ -48,13 +48,13 @@ namespace Blair.Compiler.Run
             Token t = Reserved.GetSymbol(value);
             if (t != null)
             {
-                this.Tokens.Add(t);
+                this.Tokens.Add(new Token(t, row, column));
                 return true;
             }
             t = Reserved.GetWord(value);
             if (t != null)
             {
-                this.Tokens.Add(t);
+                this.Tokens.Add(new Token(t, row, column));
                 return true;
             }
             return false;

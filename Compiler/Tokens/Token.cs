@@ -22,6 +22,14 @@ namespace Blair.Compiler.Tokens
             this.Column = column;
         }
 
+        public Token(Token token, int line, int column)
+        {
+            this.Code = token.Code;
+            this.Lexem = token.Lexem;
+            this.Line = line;
+            this.Column = column;
+        }
+
         public override string ToString()
         {
             return "{token: '" + this.Code + "', lexem: '" + this.Lexem + "'}";
