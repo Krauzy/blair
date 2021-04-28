@@ -1,5 +1,5 @@
 # BLAIR
-***The magic of code***
+***The magic of code***🧙‍♀️🔮
 
 BLAIR© is a programming language made in C # with the intention of learning the operation, structure and logic of raw programming languages
 
@@ -18,19 +18,19 @@ A compiler has:
 
 <img src="https://slidetodoc.com/presentation_image_h/29b578585db11eafc4a2f2e122d35ade/image-5.jpg" width="400">
 
-## Lexical
+## Lexical✔️
 
 - [x] Consistent grammar
 - [x] Definition of First and Follow rules
 - [x] Token recognition (with details)
 
-## Syntatic
+## Syntatic❌
 
 - [ ] Complete syntatic analysis
 - [x] Error identification and indication (row and column)
 - [x] Error handling
 
-## Semantic
+## Semantic❌
 
 - [ ] Types check
 - [ ] Inicialization check
