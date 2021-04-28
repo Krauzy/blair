@@ -25,8 +25,8 @@ namespace Blair.Compiler
 
         public static string Run(string code)
         {
-            Compiler com = new Compiler();
             long start = DateTime.Now.Ticks;
+            Compiler com = new Compiler();            
             Reserved.Load();
             string output = string.Empty;
             Lexical lexical = new Lexical(code);
@@ -35,16 +35,17 @@ namespace Blair.Compiler
             Compiler.COLUMN = lexical.column;
             com.Tokens = lexical.Tokens;
             foreach(Token t in com.Tokens)
-            {
                 Console.WriteLine(t.ToString());
-            }
             com.Errors.AddRange(lexical.Errors);
+            Syntatic syntatic = new Syntatic(com.Tokens);
+            syntatic.Run();
+            com.Errors.AddRange(syntatic.Errors);
             foreach(Error err in com.Errors)
-                output += $"> Erro: {err}";
+                output += $">> Erro: {err}\n";
             long stop = DateTime.Now.Ticks;
-            output = (output == string.Empty) ? "> Compilado com sucesso!" : output;
+            output = (output == string.Empty) ? ">> Compilado com sucesso!" : output;
             int res = Convert.ToInt32(stop - start);
-            output += "\n> \n> Tempo de compilação: " + (double)res / 10000000 + "s";
+            output += "\n>> Tempo de compilação: " + (double)res / 10000000 + "s";
             return output;
         }
     }

@@ -17,6 +17,8 @@ namespace Blair.Compiler.Run
         private Token token;
         private int lenght;
 
+        public List<Error> Errors { get => this.errors; set => this.errors = value; }
+
         public Syntatic (List<Token> tokens)
         {
             this.tokens = tokens;
@@ -83,7 +85,7 @@ namespace Blair.Compiler.Run
                         bool var = true;
                         bool end = false;
 
-                        while (!follow.Declaration.Contains(this.token.Code))
+                        while (this.token != null && !follow.Declaration.Contains(this.token.Code))
                         {
                             end = true;
                             if (this.token.Code == "var" && var)
@@ -143,7 +145,7 @@ namespace Blair.Compiler.Run
             {
                 if (first.Command.Contains(this.token.Code))
                 {
-                    this.token = NextToken();
+                    //this.token = NextToken();
                     switch(this.token.Code)
                     {
                         case "if":
@@ -267,7 +269,7 @@ namespace Blair.Compiler.Run
                 {
                     aux = this.token;
                     this.token = NextToken();
-                    if (Follow.Compare_Symbols.Contains(this.token.Code))
+                    if (this.token.Code == "compare")
                     {
                         this.token = NextToken();
                         if (first.Compare.Contains(this.token.Code))
@@ -314,6 +316,7 @@ namespace Blair.Compiler.Run
                         else
                         {
                             _compare();
+                            this.token = NextToken();
                             if (this.token.Code == "logic")
                             {
                                 this.token = NextToken();
@@ -477,46 +480,49 @@ namespace Blair.Compiler.Run
                         {
                             _allocation();
                             if (!follow.Declaration.Contains(this.token.Code))
+                            {
+                                this.errors.Add(new Error("';' esperado", this.token.Line, this.token.Column));
+                            }
+                        }
+
+                        this.token = NextToken();
+                        if (this.token.Code != "end")
+                        {
+                            _condition();
+                            if (this.token.Code != "end")
                                 this.errors.Add(new Error("';' esperado", this.token.Line, this.token.Column));
                         }
-                        else
+                        
+                        this.token = NextToken();
+                        if (this.token.Code != "end")
+                        {
+                            _allocation();
+                            this.token = NextToken();
+                        }
+                            
+                        if (this.token.Code == "close-parenthesis")
                         {
                             this.token = NextToken();
-                            if (this.token.Code != "end")
-                            {
-                                _condition();
-                                if (this.token.Code != "end")
-                                    this.errors.Add(new Error("';' esperado", this.token.Line, this.token.Column));
-                            }
-                            else
+                            if (this.token.Code == "opening")
                             {
                                 this.token = NextToken();
-                                if (this.token.Code != "end")
-                                    _allocation();
-                                if (this.token.Code == "close-parenthesis")
+                                if (this.token.Code == "open-bracket")
                                 {
                                     this.token = NextToken();
-                                    if (this.token.Code == "opening")
-                                    {
+                                    _command();
+                                    if (follow.Loop.Contains(this.token.Code))
                                         this.token = NextToken();
-                                        if (this.token.Code == "open-bracket")
-                                        {
-                                            _command();
-                                            if (follow.Loop.Contains(this.token.Code))
-                                                this.token = NextToken();
-                                            else
-                                                this.errors.Add(new Error("'}' esperado", this.token.Line, this.token.Column));
-                                        }
-                                        else
-                                            this.errors.Add(new Error("'{' esperado", this.token.Line, this.token.Column));
-                                    }
                                     else
-                                        this.errors.Add(new Error("':' esperado", this.token.Line, this.token.Column));
+                                        this.errors.Add(new Error("'}' esperado", this.token.Line, this.token.Column));
                                 }
                                 else
-                                    this.errors.Add(new Error("')' esperado", this.token.Line, this.token.Column));
+                                    this.errors.Add(new Error("'{' esperado", this.token.Line, this.token.Column));
                             }
+                            else
+                                this.errors.Add(new Error("':' esperado", this.token.Line, this.token.Column));
                         }
+                        else
+                            this.errors.Add(new Error("')' esperado", this.token.Line, this.token.Column));
                     }
                 }
             }

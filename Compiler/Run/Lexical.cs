@@ -167,7 +167,7 @@ namespace Blair.Compiler.Run
                                 }
                             }
                         }
-                        else
+                        else    // É número
                         {
                             string temp = string.Empty;
                             while (this.column < line.Length && !char.IsWhiteSpace(line[this.column]) && !IsReserved(line[this.column].ToString()))
@@ -179,6 +179,9 @@ namespace Blair.Compiler.Run
                                 this.Tokens.Add(new Token("number", temp, line: this.row, column: this.column));
                             else
                                 this.Errors.Add(new Error($"Valor '{temp}' inconsistente", row, column));
+
+                            AddToken(line[this.column].ToString());
+
                         }
                     }
                     this.row++;

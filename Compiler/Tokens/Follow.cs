@@ -8,8 +8,6 @@ namespace Blair.Compiler.Tokens
 {
     public class Follow
     {
-        public static List<string> Compare_Symbols = new List<string> { "<", ">", "<=", ">=", "==", "!=" };
-
         public List<string> Main { get; set; }
         public List<string> Var { get; set; }
         public List<string> Declaration { get; set; }
