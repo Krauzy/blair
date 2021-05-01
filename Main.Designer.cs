@@ -53,6 +53,7 @@
             this.enumerate_column = new System.Windows.Forms.TextBox();
             this.Output_Label = new System.Windows.Forms.Label();
             this.button2 = new System.Windows.Forms.Button();
+            this.Scroll_Bar = new System.Windows.Forms.VScrollBar();
             this.Head_Pane.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.panel2.SuspendLayout();
@@ -149,6 +150,7 @@
             this.SaveFile_Button.Size = new System.Drawing.Size(32, 32);
             this.SaveFile_Button.TabIndex = 3;
             this.SaveFile_Button.UseVisualStyleBackColor = false;
+            this.SaveFile_Button.Click += new System.EventHandler(this.SaveFile_Button_Click);
             this.SaveFile_Button.MouseEnter += new System.EventHandler(this.Op_Buttons_Mouse_Enter);
             this.SaveFile_Button.MouseLeave += new System.EventHandler(this.Op_Buttons_Mouse_Leave);
             // 
@@ -277,6 +279,7 @@
             // 
             this.panel3.BackColor = System.Drawing.Color.White;
             this.panel3.Controls.Add(this.label7);
+            this.panel3.Controls.Add(this.button2);
             this.panel3.Controls.Add(this.Clear_Button);
             this.panel3.Controls.Add(this.label5);
             this.panel3.Location = new System.Drawing.Point(511, 84);
@@ -314,12 +317,12 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(-6, 37);
+            this.label5.Location = new System.Drawing.Point(-3, 37);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(517, 13);
+            this.label5.Size = new System.Drawing.Size(523, 13);
             this.label5.TabIndex = 5;
             this.label5.Text = "_________________________________________________________________________________" +
-    "____";
+    "_____";
             // 
             // Code_Box
             // 
@@ -355,11 +358,11 @@
             // 
             this.Output_Label.AutoSize = true;
             this.Output_Label.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Output_Label.Location = new System.Drawing.Point(517, 137);
+            this.Output_Label.Location = new System.Drawing.Point(513, 136);
             this.Output_Label.Name = "Output_Label";
-            this.Output_Label.Size = new System.Drawing.Size(14, 15);
+            this.Output_Label.Size = new System.Drawing.Size(21, 15);
             this.Output_Label.TabIndex = 6;
-            this.Output_Label.Text = ">";
+            this.Output_Label.Text = ">>";
             // 
             // button2
             // 
@@ -371,11 +374,21 @@
             this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button2.Font = new System.Drawing.Font("Century Gothic", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button2.ForeColor = System.Drawing.Color.White;
-            this.button2.Location = new System.Drawing.Point(991, 507);
+            this.button2.Location = new System.Drawing.Point(404, 15);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(23, 23);
+            this.button2.Size = new System.Drawing.Size(19, 19);
             this.button2.TabIndex = 7;
             this.button2.UseVisualStyleBackColor = false;
+            // 
+            // Scroll_Bar
+            // 
+            this.Scroll_Bar.LargeChange = 1;
+            this.Scroll_Bar.Location = new System.Drawing.Point(1002, 134);
+            this.Scroll_Bar.Maximum = 1;
+            this.Scroll_Bar.Name = "Scroll_Bar";
+            this.Scroll_Bar.Size = new System.Drawing.Size(19, 404);
+            this.Scroll_Bar.TabIndex = 8;
+            this.Scroll_Bar.Scroll += new System.Windows.Forms.ScrollEventHandler(this.Scroll_Bar_Scroll);
             // 
             // Main
             // 
@@ -383,14 +396,14 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1022, 538);
-            this.Controls.Add(this.button2);
-            this.Controls.Add(this.Output_Label);
+            this.Controls.Add(this.Scroll_Bar);
             this.Controls.Add(this.Code_Box);
             this.Controls.Add(this.panel3);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.Head_Pane);
             this.Controls.Add(this.enumerate_column);
+            this.Controls.Add(this.Output_Label);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Main";
@@ -436,6 +449,7 @@
         private System.Windows.Forms.Label Output_Label;
         private System.Windows.Forms.Button Minimize_Button;
         private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.VScrollBar Scroll_Bar;
     }
 }
 

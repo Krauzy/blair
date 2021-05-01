@@ -117,7 +117,7 @@ namespace Blair.Compiler.Run
                             }
                             else    // String not done ?
                             {
-                                this.Errors.Add(new Error($"Lexical > esperado \"'\"", row, column));      // Trigger String Error
+                                this.Errors.Add(new Error($"Símbolo \"'\" esperado", row, column));      // Trigger String Error
                                 continue;
                             }
                         }
@@ -150,7 +150,7 @@ namespace Blair.Compiler.Run
                                             this.letters++;
                                         }
                                         if (!IsNumber(temp))
-                                            this.Errors.Add(new Error($"Lexical > '{temp}' não reconhecido!", row, column));
+                                            this.Errors.Add(new Error($"Token '{temp}' não reconhecido!", row, column));
                                         else
                                             this.Tokens.Add(new Token("number", temp, line: this.row, column: this.column));
                                         continue;
@@ -184,10 +184,8 @@ namespace Blair.Compiler.Run
                             if (IsNumber(temp))
                                 this.Tokens.Add(new Token("number", temp, line: this.row, column: this.column));
                             else
-                                this.Errors.Add(new Error($"Lexical > Valor '{temp}' inconsistente", row, column));
-
+                                this.Errors.Add(new Error($"Token '{temp}' inconsistente", row, column));
                             AddToken(line[this.column].ToString());
-
                         }
                     }
                     this.row++;
@@ -196,7 +194,7 @@ namespace Blair.Compiler.Run
             }
             catch
             {
-                this.Errors.Add(new Error($"Lexical > EOF inesperado", row, column));
+                this.Errors.Add(new Error($"EOF inesperado", row, column));
             }
         }
     }

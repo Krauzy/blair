@@ -39,9 +39,11 @@ namespace Blair.Compiler
             com.Errors.AddRange(lexical.Errors);
             Syntactic syntatic = new Syntactic(com.Tokens);
             syntatic.Run();
-            com.Errors.AddRange(syntatic.Errors);
-            foreach(Error err in com.Errors)
-                output += $">> Erro: {err}\n";
+            //com.Errors.AddRange(syntatic.Errors);
+            foreach(Error err in lexical.Errors)
+                output += $">> Lexical Error: {err}\n";
+            foreach (Error err in syntatic.Errors)
+                output += $">> Syntatic Error: {err}\n";
             long stop = DateTime.Now.Ticks;
             output = (output == string.Empty) ? ">> Compilado com sucesso!" : output;
             int res = Convert.ToInt32(stop - start);

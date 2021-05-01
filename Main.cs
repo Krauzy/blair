@@ -22,6 +22,7 @@ namespace Blair
         private bool move = false;
         private Point mouse;
         private string PATH = string.Empty;
+        private int fixed_y_label = 126;
         //
         private string code1 = "init: {\n" +
             "\tinteger: a, b, i;\n" +
@@ -35,7 +36,7 @@ namespace Blair
             "\t\tz++;\n" +
             "\t}\n" +
             "\telse: {\n" +
-            "\t\twhile(z > -10 && z < 10) {\n" +
+            "\t\twhile(z > -10 && z < 10): {\n" +
             "\t\t\tz--;\n" +
             "\t\t}\n" +
             "\t}\n" +
@@ -57,6 +58,7 @@ namespace Blair
                 "}";*/
             Code_Box.Text = code1;
             Code_Box_TextChanged(Code_Box, null);
+            Scroll_Bar.Visible = false;
         }
 
         private void Close_Button_Click(object sender, EventArgs e)
@@ -122,7 +124,7 @@ namespace Blair
             string[] words = { "while", "init", "if", "loop", "else", "true", "false" };
             string[] types = { "integer", "decimal", "string", "bool"};
             string[] numbers = { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "." };
-            string[] symbol = { ":" };
+            string[] symbol = { ":", "&&", "||", "!", "+", "-", "/", "%", "=", "<", ">" };
 
             Run_String_Code_Box();
             this.Check_Keyword(words, Color.FromArgb(60, 9, 108));
@@ -272,6 +274,14 @@ namespace Blair
         private void Run_Button_Click(object sender, EventArgs e)
         {
             Output_Label.Text = Compiler.Compiler.Run(Code_Box.Text.Replace("\t", string.Empty));
+            int rows = Get_Lines(Output_Label.Text);
+            if (rows <= 26)
+                Scroll_Bar.Visible = false;
+            else
+            {
+                Scroll_Bar.Visible = true;
+                Scroll_Bar.Maximum = rows - 26;
+            }
             this.ActiveControl = null;
         }
 
@@ -297,6 +307,43 @@ namespace Blair
                 t.Join();
                 Code_Box.Text = code;
                 Code_Box_TextChanged(Code_Box, null);
+            }
+        }
+
+        private void Scroll_Bar_Scroll(object sender, ScrollEventArgs e)
+        {
+            int y = fixed_y_label;
+            for (int i = 0; i < e.NewValue; i++)
+            {
+                y -= 20;
+            }
+            if (e.NewValue == 0)
+                y = fixed_y_label + 10;
+            Output_Label.Location = new Point(Output_Label.Location.X, y);
+        }
+
+        private void SaveFile_Button_Click(object sender, EventArgs e)
+        {
+            if (PATH == string.Empty)
+            {
+                SaveFileDialog save = new SaveFileDialog
+                {
+                    Title = "Salvar Arquivo",
+                    DefaultExt = "bla",
+                    Filter = "Arquivos BLAIR (*.bla)|*.bla|Todos os arquivos (*.*)|*.*",
+                    InitialDirectory = Environment.SpecialFolder.MyDocuments.ToString(),
+                    RestoreDirectory = true
+                };
+
+                if(save.ShowDialog() == DialogResult.OK)
+                {
+                    this.PATH = save.FileName;
+                    Files.Write(PATH, Code_Box.Text);
+                }
+            }
+            else
+            {
+                Files.Write(PATH, Code_Box.Text);
             }
         }
     }

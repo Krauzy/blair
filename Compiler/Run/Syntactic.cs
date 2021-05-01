@@ -194,6 +194,7 @@ namespace Blair.Compiler.Run
                     _command();
                     if (!follow.If.Contains(this.token.Code))
                         this.errors.Add(new Error("'}' esperado", this.token.Line, this.token.Column));
+                    this.token = NextToken();
                     _else();
                 }
             }
@@ -211,43 +212,15 @@ namespace Blair.Compiler.Run
             {
                 this.token = NextToken();
                 if (this.token.Code != "opening")
-                    this.errors.Add(new Error("':' esperado", this.token.Line, this.token.Column));
+                    this.errors.Add(new Error("Símbolo ':' esperado", this.token.Line, this.token.Column));
                 this.token = NextToken();
-                if (this.token.Code == "open-bracket")
-                    this.errors.Add(new Error("'{' esperado", this.token.Line, this.token.Column));
+                if (this.token.Code != "open-bracket")
+                    this.errors.Add(new Error("Símbolo '{' esperado", this.token.Line, this.token.Column));
                 this.token = NextToken();
                 _command();
-            }
-        }
-        private void _else()
-        {
-            try
-            {
-                if (first.Else.Contains(this.token.Code))
-                {
-                    this.token = NextToken();
-                    if (this.token.Code == "opening")
-                    {
-                        this.token = NextToken();
-                        if (this.token.Code == "open-bracket")
-                        {
-                            this.token = NextToken();
-                            _command();
-                            if (follow.Else.Contains(this.token.Code))
-                                this.token = NextToken();
-                            else
-                                this.errors.Add(new Error("'}' esperado", this.token.Line, this.token.Column));
-                        }
-                        else
-                            this.errors.Add(new Error("'{' esperado", this.token.Line, this.token.Column));
-                    }
-                    else
-                        this.errors.Add(new Error("':' esperado", this.token.Line, this.token.Column));
-                }
-            }
-            catch
-            {
-                this.errors.Add(new Error("EOF inesperado", Compiler.LINE, Compiler.COLUMN));
+                if (!follow.Else.Contains(this.token.Code))
+                    this.errors.Add(new Error("Símbolo '}' esperado", this.token.Line, this.token.Column));
+                this.token = NextToken();
             }
         }
         #endregion
@@ -277,6 +250,11 @@ namespace Blair.Compiler.Run
 
                         if (!follow.Compare.Contains(this.token.Code))
                             this.errors.Add(new Error($"Token '{this.token.Lexem}' inesperado", this.token.Line, this.token.Column));
+                        else
+                        {
+                            this.lenght--;
+                        }
+                            
                     }
                 }
             }
@@ -296,7 +274,7 @@ namespace Blair.Compiler.Run
             {
                 if (!first.Result.Contains(this.token.Code))
                     this.errors.Add(new Error($"Token '{this.token.Lexem}' inesperado", this.token.Line, this.token.Column));
-                if (this.token.Code == "!")
+                if (this.token.Code == "not")
                 {
                     this.token = NextToken();
                     not = true;
@@ -317,7 +295,7 @@ namespace Blair.Compiler.Run
                         _result();
                     }
                     else if (!follow.Result.Contains(this.token.Code))
-                        this.errors.Add(new Error($"Token {this.token.Code} inesperado", this.token.Line, this.token.Column));
+                        this.errors.Add(new Error($"Token '{this.token.Code}' inesperado", this.token.Line, this.token.Column));
                 }
             }
             catch

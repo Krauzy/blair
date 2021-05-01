@@ -11,7 +11,27 @@ namespace Blair.Compiler.Util
     {
         public static string Read(string path)
         {
-            return File.ReadAllText(path);
+            try
+            {
+                return File.ReadAllText(path);
+            }
+            catch
+            {
+                return string.Empty;
+            }
+        }
+
+        public static bool Write(string path, string content = "")
+        {
+            try
+            {
+                File.WriteAllText(path, content);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }            
         }
     }
 }
