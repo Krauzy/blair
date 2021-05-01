@@ -33,7 +33,11 @@
             this.Minimize_Button = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.Close_Button = new System.Windows.Forms.Button();
+            this.Git_Button = new System.Windows.Forms.Button();
+            this.SaveFile_Button = new System.Windows.Forms.Button();
+            this.OpenFile_Button = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.label3 = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
             this.Run_Button = new System.Windows.Forms.Button();
@@ -49,15 +53,11 @@
             this.enumerate_column = new System.Windows.Forms.TextBox();
             this.Output_Label = new System.Windows.Forms.Label();
             this.button2 = new System.Windows.Forms.Button();
-            this.Git_Button = new System.Windows.Forms.Button();
-            this.SaveFile_Button = new System.Windows.Forms.Button();
-            this.OpenFile_Button = new System.Windows.Forms.Button();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.Head_Pane.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.panel2.SuspendLayout();
             this.panel4.SuspendLayout();
             this.panel3.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // Head_Pane
@@ -118,6 +118,57 @@
             this.Close_Button.UseVisualStyleBackColor = true;
             this.Close_Button.Click += new System.EventHandler(this.Close_Button_Click);
             // 
+            // Git_Button
+            // 
+            this.Git_Button.BackgroundImage = global::Blair.Properties.Resources.git_white;
+            this.Git_Button.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.Git_Button.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.Git_Button.FlatAppearance.BorderSize = 0;
+            this.Git_Button.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Git_Button.ForeColor = System.Drawing.Color.White;
+            this.Git_Button.Location = new System.Drawing.Point(857, 25);
+            this.Git_Button.Name = "Git_Button";
+            this.Git_Button.Size = new System.Drawing.Size(32, 32);
+            this.Git_Button.TabIndex = 4;
+            this.Git_Button.UseVisualStyleBackColor = false;
+            this.Git_Button.Click += new System.EventHandler(this.Git_Button_Click);
+            this.Git_Button.MouseEnter += new System.EventHandler(this.Op_Buttons_Mouse_Enter);
+            this.Git_Button.MouseLeave += new System.EventHandler(this.Op_Buttons_Mouse_Leave);
+            // 
+            // SaveFile_Button
+            // 
+            this.SaveFile_Button.BackColor = System.Drawing.Color.Transparent;
+            this.SaveFile_Button.BackgroundImage = global::Blair.Properties.Resources.save_white;
+            this.SaveFile_Button.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.SaveFile_Button.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.SaveFile_Button.FlatAppearance.BorderSize = 0;
+            this.SaveFile_Button.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.SaveFile_Button.ForeColor = System.Drawing.Color.White;
+            this.SaveFile_Button.Location = new System.Drawing.Point(810, 25);
+            this.SaveFile_Button.Name = "SaveFile_Button";
+            this.SaveFile_Button.Size = new System.Drawing.Size(32, 32);
+            this.SaveFile_Button.TabIndex = 3;
+            this.SaveFile_Button.UseVisualStyleBackColor = false;
+            this.SaveFile_Button.MouseEnter += new System.EventHandler(this.Op_Buttons_Mouse_Enter);
+            this.SaveFile_Button.MouseLeave += new System.EventHandler(this.Op_Buttons_Mouse_Leave);
+            // 
+            // OpenFile_Button
+            // 
+            this.OpenFile_Button.BackgroundImage = global::Blair.Properties.Resources.open_white;
+            this.OpenFile_Button.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.OpenFile_Button.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.OpenFile_Button.FlatAppearance.BorderSize = 0;
+            this.OpenFile_Button.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.OpenFile_Button.ForeColor = System.Drawing.Color.White;
+            this.OpenFile_Button.Location = new System.Drawing.Point(761, 25);
+            this.OpenFile_Button.Name = "OpenFile_Button";
+            this.OpenFile_Button.Size = new System.Drawing.Size(32, 32);
+            this.OpenFile_Button.TabIndex = 2;
+            this.OpenFile_Button.UseVisualStyleBackColor = false;
+            this.OpenFile_Button.Click += new System.EventHandler(this.OpenFile_Button_Click);
+            this.OpenFile_Button.MouseEnter += new System.EventHandler(this.Op_Buttons_Mouse_Enter);
+            this.OpenFile_Button.MouseLeave += new System.EventHandler(this.Op_Buttons_Mouse_Leave);
+            // 
             // label1
             // 
             this.label1.AutoSize = true;
@@ -128,6 +179,16 @@
             this.label1.Size = new System.Drawing.Size(104, 28);
             this.label1.TabIndex = 1;
             this.label1.Text = "B L A I R";
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Image = global::Blair.Properties.Resources.logo;
+            this.pictureBox1.Location = new System.Drawing.Point(42, 10);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(65, 65);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBox1.TabIndex = 0;
+            this.pictureBox1.TabStop = false;
             // 
             // label3
             // 
@@ -294,7 +355,7 @@
             // 
             this.Output_Label.AutoSize = true;
             this.Output_Label.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Output_Label.Location = new System.Drawing.Point(517, 142);
+            this.Output_Label.Location = new System.Drawing.Point(517, 137);
             this.Output_Label.Name = "Output_Label";
             this.Output_Label.Size = new System.Drawing.Size(14, 15);
             this.Output_Label.TabIndex = 6;
@@ -315,66 +376,6 @@
             this.button2.Size = new System.Drawing.Size(23, 23);
             this.button2.TabIndex = 7;
             this.button2.UseVisualStyleBackColor = false;
-            // 
-            // Git_Button
-            // 
-            this.Git_Button.BackgroundImage = global::Blair.Properties.Resources.git_white;
-            this.Git_Button.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.Git_Button.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.Git_Button.FlatAppearance.BorderSize = 0;
-            this.Git_Button.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.Git_Button.ForeColor = System.Drawing.Color.White;
-            this.Git_Button.Location = new System.Drawing.Point(857, 25);
-            this.Git_Button.Name = "Git_Button";
-            this.Git_Button.Size = new System.Drawing.Size(32, 32);
-            this.Git_Button.TabIndex = 4;
-            this.Git_Button.UseVisualStyleBackColor = false;
-            this.Git_Button.Click += new System.EventHandler(this.Git_Button_Click);
-            this.Git_Button.MouseEnter += new System.EventHandler(this.Op_Buttons_Mouse_Enter);
-            this.Git_Button.MouseLeave += new System.EventHandler(this.Op_Buttons_Mouse_Leave);
-            // 
-            // SaveFile_Button
-            // 
-            this.SaveFile_Button.BackColor = System.Drawing.Color.Transparent;
-            this.SaveFile_Button.BackgroundImage = global::Blair.Properties.Resources.save_white;
-            this.SaveFile_Button.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.SaveFile_Button.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.SaveFile_Button.FlatAppearance.BorderSize = 0;
-            this.SaveFile_Button.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.SaveFile_Button.ForeColor = System.Drawing.Color.White;
-            this.SaveFile_Button.Location = new System.Drawing.Point(810, 25);
-            this.SaveFile_Button.Name = "SaveFile_Button";
-            this.SaveFile_Button.Size = new System.Drawing.Size(32, 32);
-            this.SaveFile_Button.TabIndex = 3;
-            this.SaveFile_Button.UseVisualStyleBackColor = false;
-            this.SaveFile_Button.MouseEnter += new System.EventHandler(this.Op_Buttons_Mouse_Enter);
-            this.SaveFile_Button.MouseLeave += new System.EventHandler(this.Op_Buttons_Mouse_Leave);
-            // 
-            // OpenFile_Button
-            // 
-            this.OpenFile_Button.BackgroundImage = global::Blair.Properties.Resources.open_white;
-            this.OpenFile_Button.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.OpenFile_Button.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.OpenFile_Button.FlatAppearance.BorderSize = 0;
-            this.OpenFile_Button.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.OpenFile_Button.ForeColor = System.Drawing.Color.White;
-            this.OpenFile_Button.Location = new System.Drawing.Point(761, 25);
-            this.OpenFile_Button.Name = "OpenFile_Button";
-            this.OpenFile_Button.Size = new System.Drawing.Size(32, 32);
-            this.OpenFile_Button.TabIndex = 2;
-            this.OpenFile_Button.UseVisualStyleBackColor = false;
-            this.OpenFile_Button.MouseEnter += new System.EventHandler(this.Op_Buttons_Mouse_Enter);
-            this.OpenFile_Button.MouseLeave += new System.EventHandler(this.Op_Buttons_Mouse_Leave);
-            // 
-            // pictureBox1
-            // 
-            this.pictureBox1.Image = global::Blair.Properties.Resources.logo;
-            this.pictureBox1.Location = new System.Drawing.Point(42, 10);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(65, 65);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pictureBox1.TabIndex = 0;
-            this.pictureBox1.TabStop = false;
             // 
             // Main
             // 
@@ -397,13 +398,13 @@
             this.Text = "Blair - The Magic of Code";
             this.Head_Pane.ResumeLayout(false);
             this.Head_Pane.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
             this.panel4.ResumeLayout(false);
             this.panel4.PerformLayout();
             this.panel3.ResumeLayout(false);
             this.panel3.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 

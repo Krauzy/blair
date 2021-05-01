@@ -37,7 +37,7 @@ namespace Blair.Compiler
             foreach(Token t in com.Tokens)
                 Console.WriteLine(t.ToString());
             com.Errors.AddRange(lexical.Errors);
-            Syntatic syntatic = new Syntatic(com.Tokens);
+            Syntactic syntatic = new Syntactic(com.Tokens);
             syntatic.Run();
             com.Errors.AddRange(syntatic.Errors);
             foreach(Error err in com.Errors)

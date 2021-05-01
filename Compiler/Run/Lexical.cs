@@ -117,7 +117,7 @@ namespace Blair.Compiler.Run
                             }
                             else    // String not done ?
                             {
-                                this.Errors.Add(new Error($"'{temp} -> Esperado \"'\"", row, column));      // Trigger String Error
+                                this.Errors.Add(new Error($"Lexical > esperado \"'\"", row, column));      // Trigger String Error
                                 continue;
                             }
                         }
@@ -134,6 +134,11 @@ namespace Blair.Compiler.Run
                                         AddToken(line[this.column].ToString());
                                         continue;
                                     }
+                                    else if (line[this.column + 1] == ';' || line[this.column + 1] == ')')
+                                    {
+                                        AddToken(line[this.column].ToString());
+                                        continue;
+                                    }
                                     else        // É negativo
                                     {
                                         string temp = string.Empty;
@@ -145,7 +150,7 @@ namespace Blair.Compiler.Run
                                             this.letters++;
                                         }
                                         if (!IsNumber(temp))
-                                            this.Errors.Add(new Error($"{temp} não reconhecido!", row, column));
+                                            this.Errors.Add(new Error($"Lexical > '{temp}' não reconhecido!", row, column));
                                         else
                                             this.Tokens.Add(new Token("number", temp, line: this.row, column: this.column));
                                         continue;
@@ -162,7 +167,8 @@ namespace Blair.Compiler.Run
                                     }
                                     if (!AddToken(temp))        // É palavra reservada
                                         this.Tokens.Add(new Token("var", temp, line: this.row, column: this.column));        // É variável
-                                    AddToken(line[this.column].ToString());
+                                    if (this.column < line.Length)
+                                        AddToken(line[this.column].ToString());
                                     continue;
                                 }
                             }
@@ -178,7 +184,7 @@ namespace Blair.Compiler.Run
                             if (IsNumber(temp))
                                 this.Tokens.Add(new Token("number", temp, line: this.row, column: this.column));
                             else
-                                this.Errors.Add(new Error($"Valor '{temp}' inconsistente", row, column));
+                                this.Errors.Add(new Error($"Lexical > Valor '{temp}' inconsistente", row, column));
 
                             AddToken(line[this.column].ToString());
 
@@ -190,7 +196,7 @@ namespace Blair.Compiler.Run
             }
             catch
             {
-                this.Errors.Add(new Error($"EOF inesperado", row, column));
+                this.Errors.Add(new Error($"Lexical > EOF inesperado", row, column));
             }
         }
     }

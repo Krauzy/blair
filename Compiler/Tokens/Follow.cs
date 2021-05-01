@@ -37,7 +37,7 @@ namespace Blair.Compiler.Tokens
             Command = new List<string> { "end", "close-bracket" };
             Type = new List<string> { "var" };
             Allocation = new List<string> { "end" };
-            Operation = new List<string> { "end" };
+            Operation = new List<string> { "end", "close-parenthesis" };
             If = new List<string> { "close-bracket" };
             Else = new List<string> { "close-bracket" };
             Loop = new List<string> { "close-bracket" };

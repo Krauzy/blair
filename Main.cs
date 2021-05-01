@@ -10,6 +10,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Blair.Compiler.Util;
+using System.Threading;
 
 namespace Blair
 {
@@ -19,17 +21,41 @@ namespace Blair
         //
         private bool move = false;
         private Point mouse;
+        private string PATH = string.Empty;
         //
+        private string code1 = "init: {\n" +
+            "\tinteger: a, b, i;\n" +
+            "\tdecimal: x;\n" +
+            "\tstring: z;\n" +
+            "\ta = 1;\n" +
+            "\tb = 2;\n" +
+            "\tz = a + b;\n" +
+            "\n" +
+            "\tif (a > b): {\n" +
+            "\t\tz++;\n" +
+            "\t}\n" +
+            "\telse: {\n" +
+            "\t\twhile(z > -10 && z < 10) {\n" +
+            "\t\t\tz--;\n" +
+            "\t\t}\n" +
+            "\t}\n" +
+            "\n" +
+            "\tloop(i = 0; i < z; i++): {\n" +
+            "\t\ta = a + i;\n" +
+            "\t}\n" +
+            "}\n";
         public Main()
         {
             InitializeComponent();
             this.ActiveControl = Code_Box;
-            Code_Box.Text = "init:{\n" +
+            /*Code_Box.Text = "init:{\n" +
                 "\tinteger: a;\n" +
-                "\tloop (a = 0; a < 10; a++): {\n" +
-                "\t\ta = a - 0.5;\n" +
+                "\ta = 0;\n" +
+                "\twhile (a < 10): {\n" +
+                "\t\ta++;\n" +
                 "\t}\n" +
-                "}";
+                "}";*/
+            Code_Box.Text = code1;
             Code_Box_TextChanged(Code_Box, null);
         }
 
@@ -167,6 +193,15 @@ namespace Blair
             {
                 e.Handled = true;
             }
+
+            /*if (e.KeyData == Keys.Tab)
+            {
+                int start = Code_Box.SelectionStart;
+                string pt1 = this.Code_Box.Text.Substring(0, start);
+                string pt2 = this.Code_Box.Text.Substring(start);
+                this.Code_Box.Text = pt1 + "    " + pt2;
+                e.Handled = true;
+            }*/
         }
 
         private void AutoCloseSymbols(char open, char close)
@@ -238,6 +273,31 @@ namespace Blair
         {
             Output_Label.Text = Compiler.Compiler.Run(Code_Box.Text.Replace("\t", string.Empty));
             this.ActiveControl = null;
+        }
+
+        private void OpenFile_Button_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog open = new OpenFileDialog
+            {
+                Title = "Abrir Arquivo",
+                InitialDirectory = Environment.SpecialFolder.MyDocuments.ToString(),
+                Filter = "Arquivos BLAIR (*.bla)|*.bla|Todos os arquivos (*.*)|*.*",
+                RestoreDirectory = true
+            };
+
+            if(open.ShowDialog() == DialogResult.OK)
+            {
+                this.PATH = open.FileName;
+                string code = null;
+                Thread t = new Thread(() =>
+                {
+                    code = Files.Read(PATH);                    
+                });
+                t.Start();
+                t.Join();
+                Code_Box.Text = code;
+                Code_Box_TextChanged(Code_Box, null);
+            }
         }
     }
 }

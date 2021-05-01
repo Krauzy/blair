@@ -1,0 +1,21 @@
+init: {
+	integer: a, b, i;
+	decimal: x;
+	string: z;
+	a = 1;
+	b = 2;
+	z = a + b;
+
+	if(a > b): {
+		z++;
+	}
+	else: {
+		while(z > -10 && z < 10) {
+            		z--;
+        	}
+	}
+
+	loop(i = 0; i < z; i++): {
+		a = a + i;
+	}
+}
