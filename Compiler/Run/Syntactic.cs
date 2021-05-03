@@ -338,6 +338,8 @@ namespace Blair.Compiler.Run
                         this.errors.Add(new Error($"Token '{this.token.Lexem}' inesperado", this.token.Line, this.token.Column));
                     if (this.token.Code == "var" || this.token.Code == "number")
                         _operation();
+                    else
+                        this.token = NextToken();
                 }
                 else
                     this.token = NextToken();
@@ -515,6 +517,21 @@ namespace Blair.Compiler.Run
             {
                 this.errors.Add(new Error($"Token '{this.token.Lexem}' fora da área de execução", this.token.Line, this.token.Column));
                 this.token = NextToken();
+            }
+            FitError();
+        }
+
+        private void FitError()
+        {
+            for(int i = 0; i < this.errors.Count; i++)
+            {
+                for (int j = 0; j < this.errors.Count; j++)
+                {
+                    if (i != j && this.errors[i].Message == this.errors[j].Message 
+                        && this.errors[i].Line == this.errors[j].Line
+                        && this.errors[i].Column == this.errors[j].Column)
+                        this.errors.RemoveAt(j--);
+                }
             }
         }
     }

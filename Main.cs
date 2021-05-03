@@ -31,6 +31,7 @@ namespace Blair
             "\ta = 1;\n" +
             "\tb = 2;\n" +
             "\tz = a + b;\n" +
+            "\tx = 'Hello World!';\n" +
             "\n" +
             "\tif (a > b): {\n" +
             "\t\tz++;\n" +
@@ -130,7 +131,7 @@ namespace Blair
             this.Check_Keyword(words, Color.FromArgb(60, 9, 108));
             this.Check_Keyword(types, Color.DarkGoldenrod);
             this.Check_Keyword(numbers, Color.OliveDrab);
-            this.Check_Keyword(symbol, Color.DarkRed);
+            this.Check_Keyword(symbol, Color.FromArgb(217, 4, 41));
             Run_Comment_Code_Box();
         }
 
@@ -195,6 +196,7 @@ namespace Blair
             {
                 e.Handled = true;
             }
+
 
             /*if (e.KeyData == Keys.Tab)
             {
@@ -345,6 +347,28 @@ namespace Blair
             {
                 Files.Write(PATH, Code_Box.Text);
             }
+        }
+
+        private void Code_Box_Click(object sender, EventArgs e)
+        {
+            int pos = Code_Box.SelectionStart;
+            int row = Code_Box.GetLineFromCharIndex(pos);
+            int col = pos - Code_Box.GetFirstCharIndexOfCurrentLine();
+            if (Code_Box.SelectionLength > 0)
+                Id_Rows_Columns.Text = $"Linha: {row} | Coluna: {col} | Seleção: {Code_Box.SelectionLength}";
+            else
+                Id_Rows_Columns.Text = $"Linha: {row} | Coluna: {col}";
+        }
+
+        private void Code_Box_KeyUp(object sender, KeyEventArgs e)
+        {
+            int pos = Code_Box.SelectionStart;
+            int row = Code_Box.GetLineFromCharIndex(pos);
+            int col = pos - Code_Box.GetFirstCharIndexOfCurrentLine();
+            if (Code_Box.SelectionLength > 0)
+                Id_Rows_Columns.Text = $"Linha: {row} | Coluna: {col} | Seleção: {Code_Box.SelectionLength}";
+            else
+                Id_Rows_Columns.Text = $"Linha: {row} | Coluna: {col}";
         }
     }
 }

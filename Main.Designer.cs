@@ -47,13 +47,14 @@
             this.button1 = new System.Windows.Forms.Button();
             this.panel3 = new System.Windows.Forms.Panel();
             this.label7 = new System.Windows.Forms.Label();
+            this.button2 = new System.Windows.Forms.Button();
             this.Clear_Button = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
             this.Code_Box = new System.Windows.Forms.RichTextBox();
             this.enumerate_column = new System.Windows.Forms.TextBox();
             this.Output_Label = new System.Windows.Forms.Label();
-            this.button2 = new System.Windows.Forms.Button();
             this.Scroll_Bar = new System.Windows.Forms.VScrollBar();
+            this.Id_Rows_Columns = new System.Windows.Forms.Label();
             this.Head_Pane.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.panel2.SuspendLayout();
@@ -298,6 +299,22 @@
             this.label7.TabIndex = 8;
             this.label7.Text = "Output";
             // 
+            // button2
+            // 
+            this.button2.BackColor = System.Drawing.Color.White;
+            this.button2.BackgroundImage = global::Blair.Properties.Resources.key_purple;
+            this.button2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.button2.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.button2.FlatAppearance.BorderSize = 0;
+            this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button2.Font = new System.Drawing.Font("Century Gothic", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button2.ForeColor = System.Drawing.Color.White;
+            this.button2.Location = new System.Drawing.Point(404, 15);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(19, 19);
+            this.button2.TabIndex = 7;
+            this.button2.UseVisualStyleBackColor = false;
+            // 
             // Clear_Button
             // 
             this.Clear_Button.BackColor = System.Drawing.Color.White;
@@ -336,9 +353,11 @@
             this.Code_Box.Size = new System.Drawing.Size(478, 404);
             this.Code_Box.TabIndex = 4;
             this.Code_Box.Text = "";
+            this.Code_Box.Click += new System.EventHandler(this.Code_Box_Click);
             this.Code_Box.TextChanged += new System.EventHandler(this.Code_Box_TextChanged);
             this.Code_Box.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Code_Box_KeyDown);
             this.Code_Box.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Code_Box_KeyPress);
+            this.Code_Box.KeyUp += new System.Windows.Forms.KeyEventHandler(this.Code_Box_KeyUp);
             // 
             // enumerate_column
             // 
@@ -364,22 +383,6 @@
             this.Output_Label.TabIndex = 6;
             this.Output_Label.Text = ">>";
             // 
-            // button2
-            // 
-            this.button2.BackColor = System.Drawing.Color.White;
-            this.button2.BackgroundImage = global::Blair.Properties.Resources.key_purple;
-            this.button2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.button2.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.button2.FlatAppearance.BorderSize = 0;
-            this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button2.Font = new System.Drawing.Font("Century Gothic", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button2.ForeColor = System.Drawing.Color.White;
-            this.button2.Location = new System.Drawing.Point(404, 15);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(19, 19);
-            this.button2.TabIndex = 7;
-            this.button2.UseVisualStyleBackColor = false;
-            // 
             // Scroll_Bar
             // 
             this.Scroll_Bar.LargeChange = 1;
@@ -390,12 +393,24 @@
             this.Scroll_Bar.TabIndex = 8;
             this.Scroll_Bar.Scroll += new System.Windows.Forms.ScrollEventHandler(this.Scroll_Bar_Scroll);
             // 
+            // Id_Rows_Columns
+            // 
+            this.Id_Rows_Columns.AutoSize = true;
+            this.Id_Rows_Columns.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(238)))), ((int)(((byte)(238)))));
+            this.Id_Rows_Columns.Font = new System.Drawing.Font("Century Gothic", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Id_Rows_Columns.Location = new System.Drawing.Point(6, 521);
+            this.Id_Rows_Columns.Name = "Id_Rows_Columns";
+            this.Id_Rows_Columns.Size = new System.Drawing.Size(112, 15);
+            this.Id_Rows_Columns.TabIndex = 9;
+            this.Id_Rows_Columns.Text = "Linha: 0 | Coluna: 0";
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1022, 538);
+            this.Controls.Add(this.Id_Rows_Columns);
             this.Controls.Add(this.Scroll_Bar);
             this.Controls.Add(this.Code_Box);
             this.Controls.Add(this.panel3);
@@ -450,6 +465,7 @@
         private System.Windows.Forms.Button Minimize_Button;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.VScrollBar Scroll_Bar;
+        private System.Windows.Forms.Label Id_Rows_Columns;
     }
 }
 

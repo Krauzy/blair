@@ -8,7 +8,6 @@ namespace Blair.Compiler.Tokens
 {
     public class Token
     {
-
         public string Code { get; set; }
         public string Lexem { get; set; }
         public int Line { get; set; }
@@ -32,7 +31,7 @@ namespace Blair.Compiler.Tokens
 
         public override string ToString()
         {
-            return "{token: '" + this.Code + "', lexem: '" + this.Lexem + "'}";
+            return "{token: '" + this.Code + "', lexem: '" + this.Lexem + ", Linha: " + this.Line + ", Coluna: " + this.Column + " }";
         }
     }
 }

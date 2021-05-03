@@ -49,52 +49,73 @@
 /************    FIRST    ************/
 
 
-<main> ::= {"init"}
-<var> ::= {variable}
-<declaration> ::= {"int", "decimal", "string", "bool"}
-<command> ::= {variable, "if", "while", "loop"}
+<main> ::= { "init" }
+
+<var> ::= { variable }
+
+<declaration> ::= { "int", "decimal", "string", "bool" }
+
+<command> ::= { variable, "if", "while", "loop" }
+
 <type> ::= {"int", "decimal", "string", "bool"}
-<allocation> ::= {variable}
-<operation> ::= {variable, number}
-<if> ::= {"if"}
-<else> ::= {"else"}
-<loop> ::= {"loop"}
-<while> ::= {"while"}
-<condition> ::= {"!", variable, number, "true", "false", string}
-<result> ::= {"!", variable, number, "true", "false", string}
-<compare_symbol> ::= {">", "<", ">=", "<=", "==", "!="}
-<compare> ::= {variable, number, "true", "false", string}
-<logic_symbol> ::= {"&&", "||"}
-<end> ::= {";"}
-<number> ::= {number}
-<id> ::= {variable}
-<operation_symbol> ::= {"+", "-", "*", "/", "%"}
-<bool> ::= {"true", "false"}
-<string> ::= {"\""}
+
+<allocation> ::= { variable }
+
+<operation> ::= { variable, number }
+
+<if> ::= { "if" }
+
+<else> ::= { "else" }
+
+<loop> ::= { "loop" }
+
+<while> ::= { "while" }
+
+<condition> ::= { "!", variable, number, "true", "false", string}
+
+<result> ::= { "!", variable, number, "true", "false", string }
+
+<compare_symbol> ::= { ">", "<", ">=", "<=", "==", "!=" }
+
+<compare> ::= { variable, number, "true", "false", string }
+
+<logic_symbol> ::= { "&&", "||" }
+
+<end> ::= { ";" }
+
+<number> ::= { number }
+
+<id> ::= { variable }
+
+<operation_symbol> ::= { "+", "-", "*", "/", "%" }
+
+<bool> ::= { "true", "false" }
+
+<string> ::= { "'" }
 
 
 /************    FOLLOW     ************/
 
 
-<main> ::= {"}"}
-<var> ::= {";"}
-<declaration> ::= {";"}
-<command> ::= {"}", ";"}
-<type> ::= {variable}
-<allocation> ::= {";", ")", "!", variable, number, "true", "false"},
-<operation> ::= {";"}
-<if> ::= {"}"}
-<else> ::= {"}"}
-<loop> ::= {"}"}
-<while> ::= {"}"}
-<condition> ::= {";", ")"}
-<result> ::= {";", ")"}
-<compare_symbol> ::= {variable, number, string, "true", "false"}
-<compare> ::= {";", ")"}
-<logic_symbol> ::= {variable, number}
-<end> ::= {variable, "if", "while", "loop", }...
+<main> ::= { "}" }
+<var> ::= { ";" }
+<declaration> ::= { ";" }
+<command> ::= { "}", ";" }
+<type> ::= { variable }
+<allocation> ::= { ";", ")", "!", variable, number, "true", "false" },
+<operation> ::= { ";" }
+<if> ::= { "}" }
+<else> ::= { "}" }
+<loop> ::= { "}" }
+<while> ::= { "}" }
+<condition> ::= { ";", ")" }
+<result> ::= { ";", ")" }
+<compare_symbol> ::= { variable, number, string, "true", "false" }
+<compare> ::= { ";", ")" }
+<logic_symbol> ::= { variable, number, string, "true", "false" }
+<end> ::= { $ }
 <number> ::= {"+", "-", "*", "/", "&&", "||", ")", ">", "<", ">=", "<=", "==", "!=", ";"}
 <id> ::= {"=", "++", "--", "+", "-", "*", "/", "&&", "||", ")", ">", "<", ">=", "<=", "==", "!="}
-<operation_symbol> ::= {variable, number}
+<operation_symbol> ::= { variable, number }
 <bool> ::= {";", ")", "&&", "||"}
 <string> ::= {";"}
