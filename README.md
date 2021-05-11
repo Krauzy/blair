@@ -24,9 +24,9 @@ A compiler has:
 - [x] Definition of First and Follow rules
 - [x] Token recognition (with details)
 
-## Syntatic❌
+## Syntatic✔️
 
-- [ ] Complete syntatic analysis
+- [x] Complete syntatic analysis
 - [x] Error identification and indication (row and column)
 - [x] Error handling
 
