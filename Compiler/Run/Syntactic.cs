@@ -16,6 +16,8 @@ namespace Blair.Compiler.Run
         private Follow follow;
         private Token token;
         private int lenght;
+        private Semantic semantic;
+        private string casting = "";
 
         public List<Error> Errors { get => this.errors; set => this.errors = value; }
 
@@ -26,6 +28,7 @@ namespace Blair.Compiler.Run
             this.first = new First();
             this.follow = new Follow();
             this.lenght = 0;
+            this.semantic = new Semantic();
         }
 
         private Token NextToken()
@@ -41,24 +44,65 @@ namespace Blair.Compiler.Run
             try
             {
                 this.token = NextToken();
-                if (!first.Main.Contains(this.token.Code))  // Começa com init?
+                // Começa com init?
+                if (!first.Main.Contains(this.token.Code))
                     this.errors.Add(new Error("Token 'init' esperado", this.token.Line, this.token.Column));
-                this.token = NextToken();
+                else
+                    this.token = NextToken();
                 if (this.token.Code != "opening")   // Depois tem o :?
                     this.errors.Add(new Error("Símbolo ':' esperado", this.token.Line, this.token.Column));
-                this.token = NextToken();
+                else
+                    this.token = NextToken();
                 if (this.token.Code != "open-bracket")  // Depois abre chave?
                     this.errors.Add(new Error("Símbolo '{' esperado", this.token.Line, this.token.Column));
-                this.token = NextToken();
+                else
+                    this.token = NextToken();
                 _declaration();     // Executa a checagem de declarações
                 _command();     // Executa a checagem de comandos
                 if (!follow.Main.Contains(this.token.Code))   // No fim, fecha as chaves?
                     this.errors.Add(new Error(" Símbolo '}' esperado", this.token.Line, this.token.Column));
-                this.token = NextToken();
+                else
+                    this.token = NextToken();
             }
             catch  // Os tokens chegaram ao final de forma inesperada 
             {
                 this.errors.Add(new Error("EOF inesperado", Compiler.LINE, Compiler.COLUMN));
+            }
+        }
+        #endregion
+
+        #region CAST
+        private bool _cast()
+        {
+            bool res = true;
+            try
+            {
+                if (this.token.Code == "open-parenthesis")
+                {
+                    this.token = NextToken();
+                    if (this.token.Code != "type")
+                    {
+                        res = false;
+                        this.errors.Add(new Error("Token '{this.token.Lexem}' inesperado", this.token.Line, this.token.Column));
+                    }
+                    else
+                        this.token = NextToken();
+
+                    if (this.token.Code != "close-parenthesis")
+                    {
+                        res = false;
+                        this.errors.Add(new Error("Token '{this.token.Lexem}' inesperado", this.token.Line, this.token.Column));
+                    }
+                    else
+                        this.token = NextToken();
+                    return res;
+                }
+                return false;
+            }
+            catch
+            {
+                this.errors.Add(new Error("EOF inesperado", Compiler.LINE, Compiler.COLUMN));
+                return false;
             }
         }
         #endregion
@@ -70,10 +114,12 @@ namespace Blair.Compiler.Run
             {
                 if (first.Declaration.Contains(this.token.Code))    // Inicia com a declaração de tipo?
                 {
+                    string type = this.token.Lexem;
                     this.token = NextToken();
                     if (this.token.Code != "opening")   // Depois possui o :
                         this.errors.Add(new Error("':' esperado", this.token.Line, this.token.Column));
-                    this.token = NextToken();
+                    else
+                        this.token = NextToken();
                     bool var = true;
                     bool end = false;
                     bool next = true;
@@ -83,6 +129,7 @@ namespace Blair.Compiler.Run
                         end = true;
                         if (this.token.Code == "var" && var)    // Se é esperado uma variável e é uma variável
                         {
+                            semantic.AddVariable(this.token.Lexem, type, this.token);
                             var = false;
                             this.token = NextToken();
                             continue;
@@ -157,7 +204,8 @@ namespace Blair.Compiler.Run
                             _allocation();  // Executa a alocação de alocação
                             if (!follow.Allocation.Contains(this.token.Code))   // A alocação termina com ;
                                 this.errors.Add(new Error("';' esperado", this.token.Line, this.token.Column));
-                            this.token = NextToken();
+                            else
+                                this.token = NextToken();
                             break;
                     }
                     _command();     // Executa a recursão de comandos (comando->comando->...->null)
@@ -180,21 +228,33 @@ namespace Blair.Compiler.Run
                     this.token = NextToken();
                     if (this.token.Code != "open-parenthesis")
                         this.errors.Add(new Error("Símbolo '(' esperado", this.token.Line, this.token.Column));
-                    this.token = NextToken();
+                    else
+                        this.token = NextToken();
+                    
                     _condition();
+                    
                     if (this.token.Code != "close-parenthesis")
                         this.errors.Add(new Error("Símbolo ')' esperado", this.token.Line, this.token.Column));
-                    this.token = NextToken();
+                    else
+                        this.token = NextToken();
+                    
                     if (this.token.Code != "opening")
                         this.errors.Add(new Error("Símbolo ':' esperado", this.token.Line, this.token.Column));
-                    this.token = NextToken();
+                    else
+                        this.token = NextToken();
+                    
                     if (this.token.Code != "open-bracket")
                         this.errors.Add(new Error("'{' esperado", this.token.Line, this.token.Column));
-                    this.token = NextToken();
+                    else
+                        this.token = NextToken();
+                    
                     _command();
+                    
                     if (!follow.If.Contains(this.token.Code))
                         this.errors.Add(new Error("'}' esperado", this.token.Line, this.token.Column));
-                    this.token = NextToken();
+                    else
+                        this.token = NextToken();
+                    
                     _else();
                 }
             }
@@ -213,14 +273,20 @@ namespace Blair.Compiler.Run
                 this.token = NextToken();
                 if (this.token.Code != "opening")
                     this.errors.Add(new Error("Símbolo ':' esperado", this.token.Line, this.token.Column));
-                this.token = NextToken();
+                else
+                    this.token = NextToken();
+                
                 if (this.token.Code != "open-bracket")
                     this.errors.Add(new Error("Símbolo '{' esperado", this.token.Line, this.token.Column));
-                this.token = NextToken();
+                else
+                    this.token = NextToken();
+                
                 _command();
+                
                 if (!follow.Else.Contains(this.token.Code))
                     this.errors.Add(new Error("Símbolo '}' esperado", this.token.Line, this.token.Column));
-                this.token = NextToken();
+                else
+                    this.token = NextToken();
             }
         }
         #endregion
@@ -231,6 +297,7 @@ namespace Blair.Compiler.Run
             Token aux;
             try
             {
+                _cast();
                 if (first.Compare.Contains(this.token.Code))
                 {
                     aux = this.token;
@@ -238,6 +305,7 @@ namespace Blair.Compiler.Run
                     if (this.token.Code == "compare")
                     {
                         this.token = NextToken();
+                        _cast();
                         if (first.Compare.Contains(this.token.Code))
                             return true;
                         else
@@ -250,11 +318,8 @@ namespace Blair.Compiler.Run
 
                         if (!follow.Compare.Contains(this.token.Code))
                             this.errors.Add(new Error($"Token '{this.token.Lexem}' inesperado", this.token.Line, this.token.Column));
-                        else
-                        {
+                        else                        
                             this.lenght--;
-                        }
-                            
                     }
                 }
             }
@@ -328,12 +393,15 @@ namespace Blair.Compiler.Run
             {
                 if (!first.Allocation.Contains(this.token.Code))
                     this.errors.Add(new Error("Tipo variável esperado", this.token.Line, this.token.Column));
-                this.token = NextToken();
+                else
+                    this.token = NextToken();
+                
                 if (!(this.token.Code == "attribuition" || this.token.Code == "increment" || this.token.Code == "decrement"))
                     this.errors.Add(new Error("Atributo de atribuição '=', '++' ou '--' esperado", this.token.Line, this.token.Column));
                 if (this.token.Code == "attribuition")
                 {
                     this.token = NextToken();
+                    _cast();
                     if (!(this.token.Code == "string" || this.token.Code == "bool" || this.token.Code == "number" || this.token.Code == "var"))
                         this.errors.Add(new Error($"Token '{this.token.Lexem}' inesperado", this.token.Line, this.token.Column));
                     if (this.token.Code == "var" || this.token.Code == "number")
@@ -356,18 +424,19 @@ namespace Blair.Compiler.Run
         {
             try
             {
+                _cast();
                 if (!first.Operation.Contains(this.token.Code))
                     this.errors.Add(new Error("Tipo 'number' ou 'var' esperado", this.token.Line, this.token.Column));
-                this.token = NextToken();
+                else
+                    this.token = NextToken();
+                
                 if (this.token.Code == "operation")
                 {
                     this.token = NextToken();
                     _operation();
                 }
-                else if (!follow.Operation.Contains(this.token.Code))
-                {
+                else if (!follow.Operation.Contains(this.token.Code))                
                     this.errors.Add(new Error($"Token '{this.token.Lexem}' inesperado", this.token.Line, this.token.Column));
-                }
             }
             catch
             {
@@ -387,21 +456,32 @@ namespace Blair.Compiler.Run
                     this.token = NextToken();
                     if (this.token.Code != "open-parenthesis")
                         this.errors.Add(new Error("Símbolo '(' esperado", this.token.Line, this.token.Column));
-                    this.token = NextToken();
+                    else
+                        this.token = NextToken();
+                    
                     _condition();
+                    
                     if (this.token.Code != "close-parenthesis")
                         this.errors.Add(new Error("Símbolo ')' esperado", this.token.Line, this.token.Column));
-                    this.token = NextToken();
+                    else
+                        this.token = NextToken();
+
                     if (this.token.Code != "opening")
                         this.errors.Add(new Error("Símbolo ':' esperado", this.token.Line, this.token.Column));
-                    this.token = NextToken();
+                    else
+                        this.token = NextToken();
+
                     if (this.token.Code != "open-bracket")
                         this.errors.Add(new Error("Símbolo '{' esperado", this.token.Line, this.token.Column));
-                    this.token = NextToken();
+                    else
+                        this.token = NextToken();
+
                     _command();
+
                     if (!follow.While.Contains(this.token.Code))
                         this.errors.Add(new Error("Símbolo '}' esperado", this.token.Line, this.token.Column));
-                    this.token = NextToken();
+                    else
+                        this.token = NextToken();
                 }
             }
             catch
@@ -409,49 +489,6 @@ namespace Blair.Compiler.Run
                 this.errors.Add(new Error("EOF inesperado", Compiler.LINE, Compiler.COLUMN));
             }
         }
-        /*private void _while()
-        {
-            try
-            {
-                if (first.While.Contains(this.token.Code))
-                {
-                    this.token = NextToken();
-                    if (this.token.Code == "open-parenthesis")
-                    {
-                        _condition();
-                        if (this.token.Code == "close-parenthesis")
-                        {
-                            this.token = NextToken();
-                            if (this.token.Code == "opening")
-                            {
-                                this.token = NextToken();
-                                if (this.token.Code == "open-bracket")
-                                {
-                                    this.token = NextToken();
-                                    _command();
-                                    if (follow.While.Contains(this.token.Code))
-                                        this.token = NextToken();
-                                    else
-                                        this.errors.Add(new Error("'}' esperado", this.token.Line, this.token.Column));
-                                }
-                                else
-                                    this.errors.Add(new Error("'{' esperado", this.token.Line, this.token.Column));
-                            }
-                            else
-                                this.errors.Add(new Error("':' esperado", this.token.Line, this.token.Column));
-                        }
-                        else
-                            this.errors.Add(new Error("')' esperado", this.token.Line, this.token.Column));
-                    }
-                    else
-                        this.errors.Add(new Error("'(' esperado", this.token.Line, this.token.Column));
-                }
-            }
-            catch
-            {
-                this.errors.Add(new Error("EOF inesperado", Compiler.LINE, Compiler.COLUMN));
-            }
-        }*/
         #endregion
 
         #region LOOP
@@ -464,7 +501,9 @@ namespace Blair.Compiler.Run
                     this.token = NextToken();
                     if (this.token.Code != "open-parenthesis")      // Abriu parentêses
                         this.errors.Add(new Error("Símbolo '(' esperado", this.token.Line, this.token.Column));
-                    this.token = NextToken();
+                    else
+                        this.token = NextToken();
+                    
                     if (!follow.Allocation.Contains(this.token.Code))   // Se houver alocação
                     {
                         _allocation();  // Executa a checagem de alocação
@@ -489,17 +528,25 @@ namespace Blair.Compiler.Run
 
                     if (this.token.Code != "close-parenthesis")     // Fechou parentêses
                         this.errors.Add(new Error("Símbolo ')' esperado", this.token.Line, this.token.Column));
-                    this.token = NextToken();
+                    else
+                        this.token = NextToken();
+                    
                     if (this.token.Code != "opening")   // Em seguida vem o : ?
                         this.errors.Add(new Error("Símbolo ':' esperado", this.token.Line, this.token.Column));
-                    this.token = NextToken();   // Abriu chaves ?
+                    else
+                        this.token = NextToken();   // Abriu chaves ?
+                    
                     if (this.token.Code != "open-bracket")
                         this.errors.Add(new Error("Símbolo '{' esperado", this.token.Line, this.token.Column));
-                    this.token = NextToken();
+                    else
+                        this.token = NextToken();
+                    
                     _command();     // Executa a recursão de comandos (comando->comando->...->null)
+                    
                     if (this.token.Code != "close-bracket")
                         this.errors.Add(new Error("Símbolo '}' esperado", this.token.Line, this.token.Column));
-                    this.token = NextToken();
+                    else
+                        this.token = NextToken();
                 }
             }
             catch

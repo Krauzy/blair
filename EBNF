@@ -98,24 +98,45 @@
 
 
 <main> ::= { "}" }
+
 <var> ::= { ";" }
+
 <declaration> ::= { ";" }
+
 <command> ::= { "}", ";" }
+
 <type> ::= { variable }
+
 <allocation> ::= { ";", ")", "!", variable, number, "true", "false" },
+
 <operation> ::= { ";" }
+
 <if> ::= { "}" }
+
 <else> ::= { "}" }
+
 <loop> ::= { "}" }
+
 <while> ::= { "}" }
+
 <condition> ::= { ";", ")" }
+
 <result> ::= { ";", ")" }
+
 <compare_symbol> ::= { variable, number, string, "true", "false" }
+
 <compare> ::= { ";", ")" }
+
 <logic_symbol> ::= { variable, number, string, "true", "false" }
+
 <end> ::= { $ }
+
 <number> ::= {"+", "-", "*", "/", "&&", "||", ")", ">", "<", ">=", "<=", "==", "!=", ";"}
+
 <id> ::= {"=", "++", "--", "+", "-", "*", "/", "&&", "||", ")", ">", "<", ">=", "<=", "==", "!="}
+
 <operation_symbol> ::= { variable, number }
-<bool> ::= {";", ")", "&&", "||"}
-<string> ::= {";"}
+
+<bool> ::= { ";", ")", "&&", "||" }
+
+<string> ::= { ";", ")" }
