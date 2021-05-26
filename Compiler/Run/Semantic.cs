@@ -29,6 +29,28 @@ namespace Blair.Compiler.Run
                 this.errors.Add(new Error($"Variável '{name}' já existente!", token.Line, token.Column));
         }
 
+        public void CheckCompare(object x, object y, int l, int c)
+        {
+            string f1 = x.GetType().ToString();
+            string f2 = y.GetType().ToString();
+
+            if (x.GetType() == typeof(Variable))
+            {
+                f1 = ((Variable)x).Type;
+            }
+
+            if (y.GetType() == typeof(Variable))
+            {
+                f2 = ((Variable)y).Type;
+            }
+
+            if ((f1 == "string" && (f2 == "integer" || f2 == "decimal")) || (f2 == "string" && (f1 == "integer" || f1 == "decimal")))
+                semantic.errors.Add(new Error($"Não é possível comparar '{f1}' em '{f2}'", l, c));
+            if ((f1 == "boolean" && f2 != "boolean") || (f2 == "boolean" && f1 != "boolean"))
+                semantic.errors.Add(new Error($"Não é possível comparar '{f1}' em '{f2}'", l, c));
+
+        }
+
         public bool isVariable (string name)
         {
             return this.GetVariable(name) != null;
@@ -45,30 +67,23 @@ namespace Blair.Compiler.Run
 
     public class Variable
     {
-        private string name;
-        private string type;
-        private bool initialized;
-        private bool casted;
-        private string castType;
-        private Token token;
-        private string value;
-        public string Name { get => this.name; set => this.name = value; }
-        public string Type { get => this.type; set => this.type = value; }
-        public bool Initialized { get => this.initialized; set => this.initialized = value; }
-        public bool Casted { get => this.casted; set => this.casted = value; }
-        public string CastType { get => this.castType; set => this.castType = value; }
-        public Token Token { get => this.token; set => this.token = value; }
-        public string Value { get => this.value; set => this.value = value; }
+        public string Name { get; set; }
+        public string Type { get; set; }
+        public bool Initialized { get; set; }
+        public Token Token { get; set; }
+        public string TextValue { get; set; }
+        public double NumericValue { get; set; }
 
-        public Variable(string name, string type, Token token, bool casted = false, string castType = "", bool initialized = false, string value = "")
+        public string OpText { get; set; }
+
+        public Variable(string name, string type, Token token, bool initialized = default, string text = default, double num = default)
         {
-            this.name = name;
-            this.type = type;
-            this.token = token;
-            this.casted = casted;
-            this.castType = castType;
-            this.value = value;
-            this.initialized = initialized;
+            this.Name = name;
+            this.Type = type;
+            this.Token = token;
+            this.TextValue = text;
+            this.NumericValue = num;
+            this.Initialized = initialized;
         }
     }
 }

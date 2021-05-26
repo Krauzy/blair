@@ -18,6 +18,7 @@ namespace Blair.Compiler.Run
         private int lenght;
         private Semantic semantic;
         private string casting = "";
+        private string op = "";
 
         public List<Error> Errors { get => this.errors; set => this.errors = value; }
 
@@ -83,15 +84,18 @@ namespace Blair.Compiler.Run
                     if (this.token.Code != "type")
                     {
                         res = false;
-                        this.errors.Add(new Error("Token '{this.token.Lexem}' inesperado", this.token.Line, this.token.Column));
+                        this.errors.Add(new Error($"Token '{this.token.Lexem}' inesperado", this.token.Line, this.token.Column));
                     }
                     else
+                    {
+                        this.casting = this.token.Lexem;
                         this.token = NextToken();
+                    }
 
                     if (this.token.Code != "close-parenthesis")
                     {
                         res = false;
-                        this.errors.Add(new Error("Token '{this.token.Lexem}' inesperado", this.token.Line, this.token.Column));
+                        this.errors.Add(new Error($"Token '{this.token.Lexem}' inesperado", this.token.Line, this.token.Column));
                     }
                     else
                         this.token = NextToken();
@@ -152,7 +156,6 @@ namespace Blair.Compiler.Run
                             this.token = NextToken();
                             continue;
                         }
-
                         if (this.token.Code != "comma" && this.token.Code != "var")    // Se não é nem , nem variável nem ;
                         {
                             this.errors.Add(new Error($"Token '{this.token.Lexem}' inesperado", this.token.Line, this.token.Column));
@@ -177,7 +180,7 @@ namespace Blair.Compiler.Run
                 this.errors.Add(new Error("EOF inesperado", Compiler.LINE, Compiler.COLUMN));
             }
         }
-        #endregion 
+        #endregion
 
         #region COMMAND
         private void _command()
@@ -389,23 +392,57 @@ namespace Blair.Compiler.Run
         #region ALLOCATION
         private void _allocation()
         {
+            string varname = string.Empty;
+            int line = 0;
+            int col = 0;
             try
             {
                 if (!first.Allocation.Contains(this.token.Code))
                     this.errors.Add(new Error("Tipo variável esperado", this.token.Line, this.token.Column));
                 else
+                {
+                    varname = this.token.Lexem;
+                    line = this.token.Line;
+                    col = this.token.Column;
                     this.token = NextToken();
+                }
                 
                 if (!(this.token.Code == "attribuition" || this.token.Code == "increment" || this.token.Code == "decrement"))
                     this.errors.Add(new Error("Atributo de atribuição '=', '++' ou '--' esperado", this.token.Line, this.token.Column));
+                if (this.token.Code == "increment")
+                {
+                    if (semantic.GetVariable(varname).Initialized && (semantic.GetVariable(varname).Type == "integer" || semantic.GetVariable(varname).Type == "decimal"))
+                        semantic.GetVariable(varname).NumericValue += 1;
+                    else
+                    {
+                        semantic.errors.Add(new Error($"Variável do tipo '{semantic.GetVariable(varname).Type}' não pode ser incrementado", line, col));
+                    }
+                }
+
+                if (this.token.Code == "decrement")
+                {
+                    if (semantic.GetVariable(varname).Initialized && (semantic.GetVariable(varname).Type == "integer" || semantic.GetVariable(varname).Type == "decimal"))
+                        semantic.GetVariable(varname).NumericValue -= 1;
+                    else
+                    {
+                        semantic.errors.Add(new Error($"Variável do tipo '{semantic.GetVariable(varname).Type}' não pode ser decrementado", line, col));
+                    }
+                }
+
                 if (this.token.Code == "attribuition")
                 {
                     this.token = NextToken();
-                    _cast();
+                    bool cast = _cast();
+                    if (cast && casting != semantic.GetVariable(varname).Type)
+                        semantic.errors.Add(new Error($"Não é possível converter {casting} em {semantic.GetVariable(varname).Type}", line, col));
                     if (!(this.token.Code == "string" || this.token.Code == "bool" || this.token.Code == "number" || this.token.Code == "var"))
                         this.errors.Add(new Error($"Token '{this.token.Lexem}' inesperado", this.token.Line, this.token.Column));
                     if (this.token.Code == "var" || this.token.Code == "number")
+                    {
+                        op = "";
                         _operation();
+                        semantic.GetVariable(varname).OpText = op;
+                    }
                     else
                         this.token = NextToken();
                 }
@@ -428,10 +465,14 @@ namespace Blair.Compiler.Run
                 if (!first.Operation.Contains(this.token.Code))
                     this.errors.Add(new Error("Tipo 'number' ou 'var' esperado", this.token.Line, this.token.Column));
                 else
+                {
+                    op += this.token.Lexem;
                     this.token = NextToken();
+                }
                 
                 if (this.token.Code == "operation")
                 {
+                    op += this.token.Lexem;
                     this.token = NextToken();
                     _operation();
                 }
