@@ -3,6 +3,15 @@
 
 BLAIR© is a programming language made in ```C#``` with the intention of learning the operation, structure and logic of raw programming languages
 
+```cs
+ init: {
+     integer a;
+     loop(a = 0; a < 10; a++): {
+         a = a - 0.5;
+     }
+ }
+```
+
 <img src="https://github.com/Krauzy/blair/blob/main/Example.png" width="800">
 
 # Analysis
@@ -35,4 +44,4 @@ A compiler has:
 - [ ] Types check
 - [ ] Inicialization check
 - [ ] Non-use check
-- [ ] Use of casting
+- [x] Use of casting
